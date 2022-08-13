@@ -2,7 +2,6 @@
   "name": "my-vue-app",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -54,7 +53,8 @@
     "stylelint-config-standard": "^27.0.0",
     "stylelint-order": "^5.0.0",
     "typescript": "^4.7.4",
-    "vite": "^3.0.6"
+    "vite": "^3.0.6",
+    "vue-eslint-parser": "^9.0.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
