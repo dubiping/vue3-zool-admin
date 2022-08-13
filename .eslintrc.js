@@ -19,6 +19,8 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'prettier',
+    './.eslintrc-auto-import.json',
   ],
   rules: {
     'vue/script-setup-uses-vars': 'error',
