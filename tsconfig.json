@@ -17,14 +17,24 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "types": ["vite/client", "jest"],
+    "types": [
+      "vite/client",
+      "jest"
+    ],
     "removeComments": true,
     "paths": {
-      "/@/*": ["src/*"],
-      "/#/*": ["types/*"]
+      "/@/*": [
+        "src/*"
+      ],
+      "/#/*": [
+        "types/*"
+      ]
     }
   },
   "include": [
@@ -38,7 +48,13 @@
     "build/**/*.ts",
     "build/**/*.d.ts",
     "mock/**/*.ts",
+    "./auto-imports.d.ts",
     "vite.config.ts"
   ],
-  "exclude": ["node_modules", "tests/server/**/*.ts", "dist", "**/*.js"]
+  "exclude": [
+    "node_modules",
+    "tests/server/**/*.ts",
+    "dist",
+    "**/*.js"
+  ]
 }
