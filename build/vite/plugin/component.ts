@@ -8,7 +8,8 @@ import Components from 'unplugin-vue-components/vite';
 export const autoRegistryComponents = () => {
   return Components({
     // relative paths to the directory to search for components.
-    dirs: ['src/components'],
+    // 'src/components'
+    dirs: [],
 
     // valid file extensions for components.
     extensions: ['vue'],
