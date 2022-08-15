@@ -2,14 +2,9 @@ import type { RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
 import { createRouter, createWebHistory } from 'vue-router';
+const LAYOUT = () => import('/@/layouts/index.vue');
 
 const basicRoutes = [
-  {
-    path: '/registeMgmt',
-    component: () => import('/@/page/registeMgmt/index.vue'),
-    name: 'registeMgmt',
-    meta: { title: '注册' },
-  },
   {
     path: '/login',
     component: () => import('/@/views/login/index.vue'),
@@ -19,10 +14,19 @@ const basicRoutes = [
   {
     path: '/',
     name: 'Root',
-    redirect: '/login',
+    component: LAYOUT,
+    redirect: '/registeMgmt',
     meta: {
       title: 'Root',
     },
+    children: [
+      {
+        path: 'registeMgmt',
+        name: 'RegisteMgmt',
+        component: () => import('/@/page/registeMgmt/index.vue'),
+        meta: { title: '注册' },
+      },
+    ],
   },
 ];
 
