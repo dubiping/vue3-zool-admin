@@ -1,4 +1,4 @@
-<script lang="ts" seup>
+<script lang="ts" setup>
 import { AppProvider } from '/@/components/Application';
 </script>
 <template>

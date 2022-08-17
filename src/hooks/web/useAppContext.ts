@@ -1,4 +1,5 @@
 import type { InjectionKey, Ref } from 'vue';
+import { computed, unref } from 'vue';
 import { createContext, useContext } from '/@/hooks/core/useContext';
 
 export interface AppProviderContextProps {
@@ -14,4 +15,12 @@ export function createAppContext(context: AppProviderContextProps) {
 
 export function useAppContext() {
   return useContext<AppProviderContextProps>(key);
+}
+
+export function useAppInject() {
+  const values = useAppContext();
+
+  return {
+    getIsMobile: computed(() => unref(values.isMobile)),
+  };
 }
