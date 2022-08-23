@@ -1,13 +1,13 @@
 <template>
   <li :class="getClass" @click.stop="handleClickItem" :style="getCollapse ? {} : getItemStyle">
-    <Tooltip placement="right" v-if="showTooptip">
+    <a-tooltip placement="right" v-if="showTooptip">
       <template #title>
         <slot name="title"></slot>
       </template>
       <div :class="`${prefixCls}-tooltip`">
         <slot></slot>
       </div>
-    </Tooltip>
+    </a-tooltip>
 
     <template v-else>
       <slot></slot>
@@ -22,11 +22,9 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { propTypes } from '/@/utils/propTypes';
   import { useMenuItem } from './useMenu';
-  import { Tooltip } from 'ant-design-vue';
   import { useSimpleRootMenuContext } from './useSimpleMenuContext';
   export default defineComponent({
     name: 'MenuItem',
-    components: { Tooltip },
     props: {
       name: {
         type: [String, Number] as PropType<string | number>,

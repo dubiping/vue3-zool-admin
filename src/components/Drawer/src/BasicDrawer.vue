@@ -1,5 +1,5 @@
 <template>
-  <Drawer :class="prefixCls" @close="onClose" v-bind="getBindValues">
+  <a-drawer :class="prefixCls" @close="onClose" v-bind="getBindValues">
     <template #title v-if="!$slots.title">
       <DrawerHeader
         :title="getMergeProps.title"
@@ -28,7 +28,7 @@
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </DrawerFooter>
-  </Drawer>
+  </a-drawer>
 </template>
 <script lang="ts">
   import type { DrawerInstance, DrawerProps } from './typing';
@@ -43,7 +43,6 @@
     toRaw,
     getCurrentInstance,
   } from 'vue';
-  import { Drawer } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { isFunction, isNumber } from '/@/utils/is';
   import { deepMerge } from '/@/utils';
@@ -55,7 +54,7 @@
   import { useAttrs } from '/@/hooks/core/useAttrs';
 
   export default defineComponent({
-    components: { Drawer, ScrollContainer, DrawerFooter, DrawerHeader },
+    components: { ScrollContainer, DrawerFooter, DrawerHeader },
     inheritAttrs: false,
     props: basicProps,
     emits: ['visible-change', 'ok', 'close', 'register'],

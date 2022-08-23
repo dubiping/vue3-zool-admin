@@ -4,7 +4,7 @@
     :style="getHiddenDomStyle"
     v-show="showClassSideBarRef"
   ></div>
-  <Sider
+  <a-layout-sider
     v-show="showClassSideBarRef"
     ref="sideRef"
     breakpoint="lg"
@@ -23,12 +23,11 @@
     </template>
     <LayoutMenu :theme="getMenuTheme" :menuMode="getMode" :splitType="getSplitType" />
     <DragBar ref="dragBarRef" />
-  </Sider>
+  </a-layout-sider>
 </template>
 <script lang="ts">
   import { computed, defineComponent, ref, unref, CSSProperties, h } from 'vue';
 
-  import { Layout } from 'ant-design-vue';
   import LayoutMenu from '../Menu/index.vue';
   import LayoutTrigger from '../Trigger/index.vue';
 
@@ -42,7 +41,7 @@
   import DragBar from './DragBar.vue';
   export default defineComponent({
     name: 'LayoutSideBar',
-    components: { Sider: Layout.Sider, LayoutMenu, DragBar, LayoutTrigger },
+    components: { LayoutMenu, DragBar, LayoutTrigger },
     setup() {
       const dragBarRef = ref<ElRef>(null);
       const sideRef = ref<ElRef>(null);

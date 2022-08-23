@@ -1,7 +1,6 @@
 <script lang="tsx">
   import type { CSSProperties, PropType } from 'vue';
   import { defineComponent, computed, unref } from 'vue';
-  import { Tooltip } from 'ant-design-vue';
   import { InfoCircleOutlined } from '@ant-design/icons-vue';
   import { getPopupContainer } from '/@/utils';
   import { isString, isArray } from '/@/utils/is';
@@ -41,7 +40,6 @@
 
   export default defineComponent({
     name: 'BasicHelp',
-    components: { Tooltip },
     props,
     setup(props, { slots }) {
       const { prefixCls } = useDesign('basic-help');
@@ -76,7 +74,7 @@
 
       return () => {
         return (
-          <Tooltip
+          <a-tooltip
             overlayClassName={`${prefixCls}__wrap`}
             title={<div style={unref(getTooltipStyle)}>{renderTitle()}</div>}
             autoAdjustOverflow={true}
@@ -85,7 +83,7 @@
             getPopupContainer={() => getPopupContainer()}
           >
             <span class={prefixCls}>{getSlot(slots) || <InfoCircleOutlined />}</span>
-          </Tooltip>
+          </a-tooltip>
         );
       };
     },

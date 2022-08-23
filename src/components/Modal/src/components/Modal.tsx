@@ -1,4 +1,3 @@
-import { Modal } from 'ant-design-vue';
 import { defineComponent, toRefs, unref } from 'vue';
 import { basicProps } from '../props';
 import { useModalDragMove } from '../hooks/useModalDrag';
@@ -25,7 +24,7 @@ export default defineComponent({
 
     return () => {
       const propsData = { ...unref(attrs), ...props, onCancel } as Recordable;
-      return <Modal {...propsData}>{extendSlots(slots)}</Modal>;
+      return <a-modal {...propsData}>{extendSlots(slots)}</a-modal>;
     };
   },
 });

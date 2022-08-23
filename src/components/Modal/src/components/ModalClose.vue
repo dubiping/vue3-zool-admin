@@ -1,28 +1,27 @@
 <template>
   <div :class="getClass">
     <template v-if="canFullscreen">
-      <Tooltip :title="t('component.modal.restore')" placement="bottom" v-if="fullScreen">
+      <a-tooltip :title="t('component.modal.restore')" placement="bottom" v-if="fullScreen">
         <FullscreenExitOutlined role="full" @click="handleFullScreen" />
-      </Tooltip>
-      <Tooltip :title="t('component.modal.maximize')" placement="bottom" v-else>
+      </a-tooltip>
+      <a-tooltip :title="t('component.modal.maximize')" placement="bottom" v-else>
         <FullscreenOutlined role="close" @click="handleFullScreen" />
-      </Tooltip>
+      </a-tooltip>
     </template>
-    <Tooltip :title="t('component.modal.close')" placement="bottom">
+    <a-tooltip :title="t('component.modal.close')" placement="bottom">
       <CloseOutlined @click="handleCancel" />
-    </Tooltip>
+    </a-tooltip>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, computed } from 'vue';
   import { FullscreenExitOutlined, FullscreenOutlined, CloseOutlined } from '@ant-design/icons-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { Tooltip } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
 
   export default defineComponent({
     name: 'ModalClose',
-    components: { Tooltip, FullscreenExitOutlined, FullscreenOutlined, CloseOutlined },
+    components: { FullscreenExitOutlined, FullscreenOutlined, CloseOutlined },
     props: {
       canFullscreen: { type: Boolean, default: true },
       fullScreen: { type: Boolean },

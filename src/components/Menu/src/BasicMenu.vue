@@ -1,5 +1,5 @@
 <template>
-  <Menu
+  <a-menu
     :selectedKeys="selectedKeys"
     :defaultSelectedKeys="defaultSelectedKeys"
     :mode="mode"
@@ -15,12 +15,11 @@
     <template v-for="item in items" :key="item.path">
       <BasicSubMenuItem :item="item" :theme="theme" :isHorizontal="isHorizontal" />
     </template>
-  </Menu>
+  </a-menu>
 </template>
 <script lang="ts">
   import type { MenuState } from './types';
   import { computed, defineComponent, unref, reactive, watch, toRefs, ref } from 'vue';
-  import { Menu } from 'ant-design-vue';
   import BasicSubMenuItem from './components/BasicSubMenuItem.vue';
   import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
   import { useOpenKeys } from './useOpenKeys';
@@ -37,7 +36,6 @@
   export default defineComponent({
     name: 'BasicMenu',
     components: {
-      Menu,
       BasicSubMenuItem,
     },
     props: basicProps,

@@ -1,14 +1,12 @@
 <template>
-  <MenuItem :key="itemKey">
+  <a-menu-item :key="itemKey">
     <span class="flex items-center">
       <Icon :icon="icon" class="mr-1" />
       <span>{{ text }}</span>
     </span>
-  </MenuItem>
+  </a-menu-item>
 </template>
 <script lang="ts">
-  import { Menu } from 'ant-design-vue';
-
   import { computed, defineComponent, getCurrentInstance } from 'vue';
 
   import Icon from '/@/components/Icon/index';
@@ -16,7 +14,7 @@
 
   export default defineComponent({
     name: 'DropdownMenuItem',
-    components: { MenuItem: Menu.Item, Icon },
+    components: { Icon },
     props: {
       // eslint-disable-next-line
       key: propTypes.string,

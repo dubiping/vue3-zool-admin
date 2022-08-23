@@ -1,6 +1,6 @@
 <template>
   <BasicMenuItem v-if="!menuHasChildren(item) && getShowMenu" v-bind="$props" />
-  <SubMenu
+  <a-sub-menu
     v-if="menuHasChildren(item) && getShowMenu"
     :class="[theme]"
     :key="`submenu-${item.path}`"
@@ -13,12 +13,11 @@
     <template v-for="childrenItem in item.children || []" :key="childrenItem.path">
       <BasicSubMenuItem v-bind="$props" :item="childrenItem" />
     </template>
-  </SubMenu>
+  </a-sub-menu>
 </template>
 <script lang="ts">
   import type { Menu as MenuType } from '/@/router/types';
   import { defineComponent, computed } from 'vue';
-  import { Menu } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { itemProps } from '../props';
   import BasicMenuItem from './BasicMenuItem.vue';
@@ -29,7 +28,6 @@
     isSubMenu: true,
     components: {
       BasicMenuItem,
-      SubMenu: Menu.SubMenu,
       MenuItemContent,
     },
     props: itemProps,

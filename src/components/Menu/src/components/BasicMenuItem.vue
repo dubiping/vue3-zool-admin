@@ -1,17 +1,16 @@
 <template>
-  <MenuItem :key="item.path">
+  <a-menu-item :key="item.path">
     <MenuItemContent v-bind="$props" :item="item" />
-  </MenuItem>
+  </a-menu-item>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Menu } from 'ant-design-vue';
   import { itemProps } from '../props';
 
   import MenuItemContent from './MenuItemContent.vue';
   export default defineComponent({
     name: 'BasicMenuItem',
-    components: { MenuItem: Menu.Item, MenuItemContent },
+    components: { MenuItemContent },
     props: itemProps,
     setup() {
       return {};

@@ -1,6 +1,5 @@
 import { defineComponent, computed, unref } from 'vue';
 import { BasicDrawer } from '/@/components/Drawer/index';
-import { Divider } from 'ant-design-vue';
 import {
   TypePicker,
   ThemeColorPicker,
@@ -403,23 +402,25 @@ export default defineComponent({
         width={330}
         class="setting-drawer"
       >
-        {unref(getShowDarkModeToggle) && <Divider>{() => t('layout.setting.darkMode')}</Divider>}
+        {unref(getShowDarkModeToggle) && (
+          <a-divider>{() => t('layout.setting.darkMode')}</a-divider>
+        )}
         {unref(getShowDarkModeToggle) && <AppDarkModeToggle class="mx-auto" />}
-        <Divider>{() => t('layout.setting.navMode')}</Divider>
+        <a-divider>{() => t('layout.setting.navMode')}</a-divider>
         {renderSidebar()}
-        <Divider>{() => t('layout.setting.sysTheme')}</Divider>
+        <a-divider>{() => t('layout.setting.sysTheme')}</a-divider>
         {renderMainTheme()}
-        <Divider>{() => t('layout.setting.headerTheme')}</Divider>
+        <a-divider>{() => t('layout.setting.headerTheme')}</a-divider>
         {renderHeaderTheme()}
-        <Divider>{() => t('layout.setting.sidebarTheme')}</Divider>
+        <a-divider>{() => t('layout.setting.sidebarTheme')}</a-divider>
         {renderSiderTheme()}
-        <Divider>{() => t('layout.setting.interfaceFunction')}</Divider>
+        <a-divider>{() => t('layout.setting.interfaceFunction')}</a-divider>
         {renderFeatures()}
-        <Divider>{() => t('layout.setting.interfaceDisplay')}</Divider>
+        <a-divider>{() => t('layout.setting.interfaceDisplay')}</a-divider>
         {renderContent()}
-        <Divider>{() => t('layout.setting.animation')}</Divider>
+        <a-divider>{() => t('layout.setting.animation')}</a-divider>
         {renderTransition()}
-        <Divider />
+        <a-divider />
         <SettingFooter />
       </BasicDrawer>
     );

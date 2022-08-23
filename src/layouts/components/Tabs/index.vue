@@ -1,6 +1,6 @@
 <template>
   <div :class="getWrapClass">
-    <Tabs
+    <a-tabs
       type="editable-card"
       size="small"
       :animated="false"
@@ -11,11 +11,11 @@
       @edit="handleEdit"
     >
       <template v-for="item in getTabsState" :key="item.query ? item.fullPath : item.path">
-        <TabPane :closable="!(item && item.meta && item.meta.affix)">
+        <a-tab-pane :closable="!(item && item.meta && item.meta.affix)">
           <template #tab>
             <TabContent :tabItem="item" />
           </template>
-        </TabPane>
+        </a-tab-pane>
       </template>
 
       <template #rightExtra v-if="getShowRedo || getShowQuick">
@@ -23,7 +23,7 @@
         <TabContent isExtra :tabItem="$route" v-if="getShowQuick" />
         <FoldButton v-if="getShowFold" />
       </template>
-    </Tabs>
+    </a-tabs>
   </div>
 </template>
 <script lang="ts">
@@ -31,7 +31,6 @@
 
   import { defineComponent, computed, unref, ref } from 'vue';
 
-  import { Tabs } from 'ant-design-vue';
   import TabContent from './components/TabContent.vue';
   import FoldButton from './components/FoldButton.vue';
   import TabRedo from './components/TabRedo.vue';
@@ -55,8 +54,6 @@
     components: {
       TabRedo,
       FoldButton,
-      Tabs,
-      TabPane: Tabs.TabPane,
       TabContent,
     },
     setup() {

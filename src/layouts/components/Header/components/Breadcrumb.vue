@@ -20,7 +20,6 @@
 
   import { defineComponent, ref, watchEffect } from 'vue';
 
-  import { Breadcrumb } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
 
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -38,7 +37,7 @@
 
   export default defineComponent({
     name: 'LayoutBreadcrumb',
-    components: { Icon, [Breadcrumb.name]: Breadcrumb },
+    components: { Icon },
     props: {
       theme: propTypes.oneOf(['dark', 'light']),
     },

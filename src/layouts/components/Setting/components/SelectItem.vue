@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls">
     <span> {{ title }}</span>
-    <Select
+    <a-select
       v-bind="getBindValue"
       :class="`${prefixCls}-select`"
       @change="handleChange"
@@ -14,14 +14,12 @@
 <script lang="ts">
   import { defineComponent, PropType, computed } from 'vue';
 
-  import { Select } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { baseHandler } from '../handler';
   import { HandlerEnum } from '../enum';
 
   export default defineComponent({
     name: 'SelectItem',
-    components: { Select },
     props: {
       event: {
         type: Number as PropType<HandlerEnum>,

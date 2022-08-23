@@ -12,14 +12,13 @@
     </div>
     <div key="skeleton" v-else>
       <slot name="skeleton" v-if="$slots.skeleton"></slot>
-      <Skeleton v-else />
+      <a-skeleton v-else />
     </div>
   </transition-group>
 </template>
 <script lang="ts">
   import type { PropType } from 'vue';
   import { defineComponent, reactive, onMounted, ref, toRef, toRefs } from 'vue';
-  import { Skeleton } from 'ant-design-vue';
   import { useTimeoutFn } from '@vueuse/core';
   import { useIntersectionObserver } from '/@/hooks/event/useIntersectionObserver';
 
@@ -67,7 +66,6 @@
 
   export default defineComponent({
     name: 'LazyContainer',
-    components: { Skeleton },
     inheritAttrs: false,
     props,
     emits: ['init'],

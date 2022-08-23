@@ -36,7 +36,7 @@ export const autoRegistryComponents = () => {
     directives: true,
 
     // filters for transforming targets
-    include: [/\.vue$/, /\.vue\?vue/],
+    include: [/\.vue$/, /\.vue\?vue/, /\.tsx$/],
     exclude: [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/, /[\\/]\.nuxt[\\/]/],
   });
 };

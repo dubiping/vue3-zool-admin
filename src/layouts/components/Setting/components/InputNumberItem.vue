@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls">
     <span> {{ title }}</span>
-    <InputNumber
+    <a-input-number
       v-bind="$attrs"
       size="small"
       :class="`${prefixCls}-input-number`"
@@ -12,14 +12,12 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
 
-  import { InputNumber } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { baseHandler } from '../handler';
   import { HandlerEnum } from '../enum';
 
   export default defineComponent({
     name: 'InputNumberItem',
-    components: { InputNumber },
     props: {
       event: {
         type: Number as PropType<HandlerEnum>,

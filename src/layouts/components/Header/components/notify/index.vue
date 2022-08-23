@@ -1,13 +1,13 @@
 <template>
   <div :class="prefixCls">
-    <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
-      <Badge :count="count" dot :numberStyle="numberStyle">
+    <a-popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
+      <a-badge :count="count" dot :numberStyle="numberStyle">
         <BellOutlined />
-      </Badge>
+      </a-badge>
       <template #content>
-        <Tabs>
+        <a-tabs>
           <template v-for="item in listData" :key="item.key">
-            <TabPane>
+            <a-tab-pane>
               <template #tab>
                 {{ item.name }}
                 <span v-if="item.list.length !== 0">({{ item.list.length }})</span>
@@ -15,16 +15,15 @@
               <!-- 绑定title-click事件的通知列表中标题是“可点击”的-->
               <NoticeList :list="item.list" v-if="item.key === '1'" @title-click="onNoticeClick" />
               <NoticeList :list="item.list" v-else />
-            </TabPane>
+            </a-tab-pane>
           </template>
-        </Tabs>
+        </a-tabs>
       </template>
-    </Popover>
+    </a-popover>
   </div>
 </template>
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue';
-  import { Popover, Tabs, Badge } from 'ant-design-vue';
   import { BellOutlined } from '@ant-design/icons-vue';
   import { tabListData, ListItem } from './data';
   import NoticeList from './NoticeList.vue';
@@ -32,7 +31,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
 
   export default defineComponent({
-    components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
+    components: { BellOutlined, NoticeList },
     setup() {
       const { prefixCls } = useDesign('header-notify');
       const { createMessage } = useMessage();

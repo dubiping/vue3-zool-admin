@@ -57,17 +57,8 @@
   import { computed, defineComponent, PropType, ref, watch, unref } from 'vue';
   import { ListItem } from './data';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { List, Avatar, Tag, Typography } from 'ant-design-vue';
   import { isNumber } from '/@/utils/is';
   export default defineComponent({
-    components: {
-      [Avatar.name]: Avatar,
-      [List.name]: List,
-      [List.Item.name]: List.Item,
-      AListItemMeta: List.Item.Meta,
-      ATypographyParagraph: Typography.Paragraph,
-      [Tag.name]: Tag,
-    },
     props: {
       list: {
         type: Array as PropType<ListItem[]>,
