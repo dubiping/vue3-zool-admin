@@ -5,7 +5,6 @@ import { store } from '/@/store';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
 import { useAppStoreWithOut } from './app';
-import { toRaw } from 'vue';
 import { transformObjToRoute, flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
 
@@ -17,9 +16,6 @@ import { asyncRoutes } from '/@/router/routes';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 
 import { filter } from '/@/utils/helper/treeHelper';
-
-import { getMenuList } from '/@/api/sys/menu';
-import { getPermCode } from '/@/api/sys/user';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -92,25 +88,14 @@ export const usePermissionStore = defineStore({
       this.backMenuList = [];
       this.lastBuildMenuTime = 0;
     },
-    async changePermissionCode() {
-      const codeList = await getPermCode();
-      this.setPermCodeList(codeList);
-    },
-    async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
+
+    async buildRoutesAction(dynamicRoutes = []): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
       const userStore = useUserStore();
       const appStore = useAppStoreWithOut();
 
       let routes: AppRouteRecordRaw[] = [];
-      const roleList = toRaw(userStore.getRoleList) || [];
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
-
-      const routeFilter = (route: AppRouteRecordRaw) => {
-        const { meta } = route;
-        const { roles } = meta || {};
-        if (!roles) return true;
-        return roleList.some((role) => roles.includes(role));
-      };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
@@ -149,16 +134,8 @@ export const usePermissionStore = defineStore({
       };
 
       switch (permissionMode) {
-        case PermissionModeEnum.ROLE:
-          routes = filter(asyncRoutes, routeFilter);
-          routes = routes.filter(routeFilter);
-          // Convert multi-level routing to level 2 routing
-          routes = flatMultiLevelRoutes(routes);
-          break;
-
         case PermissionModeEnum.ROUTE_MAPPING:
-          routes = filter(asyncRoutes, routeFilter);
-          routes = routes.filter(routeFilter);
+          routes = asyncRoutes;
           const menuList = transformRouteToMenu(routes, true);
           routes = filter(routes, routeRemoveIgnoreFilter);
           routes = routes.filter(routeRemoveIgnoreFilter);
@@ -183,25 +160,21 @@ export const usePermissionStore = defineStore({
           // !Simulate to obtain permission codes from the background,
           // this function may only need to be executed once, and the actual project can be put at the right time by itself
           let routeList: AppRouteRecordRaw[] = [];
-          try {
-            this.changePermissionCode();
-            routeList = (await getMenuList()) as AppRouteRecordRaw[];
-          } catch (error) {
-            console.error(error);
-          }
 
           // Dynamically introduce components
-          routeList = transformObjToRoute(routeList);
+          routeList = transformObjToRoute(dynamicRoutes);
 
           //  Background routing to menu structure
           const backMenuList = transformRouteToMenu(routeList);
           this.setBackMenuList(backMenuList);
-
+          console.log(backMenuList, dynamicRoutes);
           // remove meta.ignoreRoute item
           routeList = filter(routeList, routeRemoveIgnoreFilter);
           routeList = routeList.filter(routeRemoveIgnoreFilter);
 
           routeList = flatMultiLevelRoutes(routeList);
+          console.log(routeList);
+
           routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
           break;
       }
