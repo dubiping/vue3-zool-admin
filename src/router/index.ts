@@ -2,33 +2,8 @@ import type { RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
 import { createRouter, createWebHistory } from 'vue-router';
-const LAYOUT = () => import('/@/layouts/index.vue');
 
-const basicRoutes = [
-  {
-    path: '/login',
-    component: () => import('/@/views/login/index.vue'),
-    name: 'login',
-    meta: { title: '登录' },
-  },
-  {
-    path: '/',
-    name: 'Root',
-    component: LAYOUT,
-    redirect: '/registeMgmt',
-    meta: {
-      title: 'Root',
-    },
-    children: [
-      {
-        path: 'registeMgmt',
-        name: 'RegisteMgmt',
-        component: () => import('/@/page/registeMgmt/index.vue'),
-        meta: { title: '注册' },
-      },
-    ],
-  },
-];
+import { basicRoutes } from './routes';
 
 // 白名单应该包含基本静态路由
 const WHITE_NAME_LIST: string[] = [];

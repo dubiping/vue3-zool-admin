@@ -4,6 +4,7 @@ import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
 
 // import { mainOutRoutes } from './mainOut';
 import { PageEnum } from '/@/enums/pageEnum';
+import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/hooks/web/useI18n';
 
 const modules = import.meta.glob('./modules/**/*.ts');
@@ -23,19 +24,26 @@ export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
 export const RootRoute: AppRouteRecordRaw = {
   path: '/',
   name: 'Root',
+  component: LAYOUT,
   redirect: PageEnum.BASE_HOME,
   meta: {
     title: 'Root',
   },
+  children: [
+    {
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: () => import('/@/views/dashboard/index.vue'),
+      meta: { title: t('routes.dashboard') },
+    },
+  ],
 };
 
 export const LoginRoute: AppRouteRecordRaw = {
   path: '/login',
+  component: () => import('/@/views/login/index.vue'),
   name: 'Login',
-  component: () => import('/@/views/sys/login/Login.vue'),
-  meta: {
-    title: t('routes.basic.login'),
-  },
+  meta: { title: t('routes.login') },
 };
 
 // Basic routing without permission

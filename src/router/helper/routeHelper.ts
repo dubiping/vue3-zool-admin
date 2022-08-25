@@ -1,10 +1,15 @@
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
 import type { Router, RouteRecordNormalized } from 'vue-router';
+import type { MenuRecordRaw } from '/@/api/type';
 
 import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '/@/router/constant';
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { treeMap } from '/@/utils/helper/treeHelper';
+import { useLocale } from '/@/locales/useLocale';
+
+const { getLocale } = useLocale();
 
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
@@ -24,8 +29,7 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
     if (!item.component && item.meta?.frameSrc) {
       item.component = 'IFRAME';
     }
-    const { component, name } = item;
-    const { children } = item;
+    const { component, name, children } = item;
     if (component) {
       const layoutFound = LayoutMap.get(component.toUpperCase());
       if (layoutFound) {
@@ -40,13 +44,32 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   });
 }
 
+function asyncImportRouteSingle(item: AppRouteRecordRaw | undefined) {
+  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../page/**/index.{vue,tsx}');
+  if (!item) return;
+  if (!item.component && item.meta?.frameSrc) {
+    item.component = 'IFRAME';
+  }
+  const { component, name } = item;
+  if (component) {
+    const layoutFound = LayoutMap.get(component.toUpperCase());
+    if (layoutFound) {
+      item.component = layoutFound;
+    } else {
+      item.component = dynamicImport(dynamicViewsModules, component as string);
+    }
+  } else if (name) {
+    item.component = getParentLayout();
+  }
+}
+
 function dynamicImport(
   dynamicViewsModules: Record<string, () => Promise<Recordable>>,
   component: string,
 ) {
   const keys = Object.keys(dynamicViewsModules);
   const matchKeys = keys.filter((key) => {
-    const k = key.replace('../../views', '');
+    const k = key.replace('../..', '');
     const startFlag = component.startsWith('/');
     const endFlag = component.endsWith('.vue') || component.endsWith('.tsx');
     const startIndex = startFlag ? 0 : 1;
@@ -62,35 +85,79 @@ function dynamicImport(
     );
     return;
   } else {
-    warn('在src/views/下找不到`' + component + '.vue` 或 `' + component + '.tsx`, 请自行创建!');
+    warn('在src/page/下找不到`' + component + '.vue` 或 `' + component + '.tsx`, 请自行创建!');
     return EXCEPTION_COMPONENT;
   }
 }
+export function transformObjToRoute<T = MenuRecordRaw>(routeList: MenuRecordRaw[]): T[] {
+  const routeChildren = treeMap(routeList, {
+    conversion(item) {
+      const temp = {
+        path: item.path || dealPath(item.pageRoute),
+        name: dealName(item.menuNameEn),
+        meta: {
+          title: getLocale.value === 'en' ? item.menuNameEn : item.menuNameZh,
+          icon: item.icon || item.menuIcon, // 配置图标
+          pageOpKeyList: item.pageOpList,
+          fieldList: item.fieldList,
+          menuId: item.id,
+        },
+        ...(item.pageRoute ? { component: item.pageRoute } : {}),
+      };
+      asyncImportRouteSingle(temp);
+      return temp;
+    },
+  });
+
+  const routes = [
+    {
+      path: '',
+      name: 'pageParent',
+      component: LAYOUT,
+      children: routeChildren,
+    },
+  ];
+  return routes as unknown as T[];
+}
+
+// 将路由中的 / 替换成 -
+function dealPath(pageRoute: string) {
+  pageRoute = pageRoute.startsWith('/') ? pageRoute.substring(1) : pageRoute;
+  pageRoute = pageRoute.replace(/\//g, '_');
+  return `/${pageRoute}`;
+}
+
+function dealName(name: string) {
+  const list = name.split(' ').filter((val) => val);
+  return list.reduce((str, val) => {
+    return (str += val[0].toUpperCase() + val.substring(1).toLowerCase());
+  }, '');
+}
 
 // Turn background objects into routing objects
-export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModule[]): T[] {
-  routeList.forEach((route) => {
-    const component = route.component as string;
-    if (component) {
-      if (component.toUpperCase() === 'LAYOUT') {
-        route.component = LayoutMap.get(component.toUpperCase());
-      } else {
-        route.children = [cloneDeep(route)];
-        route.component = LAYOUT;
-        route.name = `${route.name}Parent`;
-        route.path = '';
-        const meta = route.meta || {};
-        meta.single = true;
-        meta.affix = false;
-        route.meta = meta;
-      }
-    } else {
-      warn('请正确配置路由：' + route?.name + '的component属性');
-    }
-    route.children && asyncImportRoute(route.children);
-  });
-  return routeList as unknown as T[];
-}
+// export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModule[]): T[] {
+//   routeList.forEach((route) => {
+//     const component = route.component as string;
+//     if (component) {
+//       if (component.toUpperCase() === 'LAYOUT') {
+//         route.component = LayoutMap.get(component.toUpperCase());
+//       } else {
+//         route.children = [cloneDeep(route)];
+//         route.component = LAYOUT;
+//         route.name = `${route.name}Parent`;
+//         route.path = '';
+//         const meta = route.meta || {};
+//         meta.single = true;
+//         meta.affix = false;
+//         route.meta = meta;
+//       }
+//     } else {
+//       warn('请正确配置路由：' + route?.name + '的component属性');
+//     }
+//     route.children && asyncImportRoute(route.children);
+//   });
+//   return routeList as unknown as T[];
+// }
 
 /**
  * Convert multi-level routing to level 2 routing

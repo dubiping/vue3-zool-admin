@@ -3,6 +3,7 @@
   import LayoutHeader from './components/Header/index.vue';
   import LayoutMultipleHeader from './components/Header/MultipleHeader.vue';
   import LayoutSideBar from './components/Sider/index.vue';
+  import LayoutFooter from './components/Footer/index.vue';
 
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
@@ -35,7 +36,7 @@
       <a-layout :class="`${prefixCls}-main`">
         <LayoutMultipleHeader />
         <LayoutContent />
-        <a-layout-footer>Footer</a-layout-footer>
+        <LayoutFooter />
       </a-layout>
     </a-layout>
   </a-layout>

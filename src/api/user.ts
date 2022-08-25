@@ -4,7 +4,7 @@ import axios from 'axios';
 export function getLoginInfo(): Promise<any> {
   return axios
     .request({
-      url: '/loginInfo2.json',
+      url: '/loginInfo.json',
       method: 'GET',
       responseType: 'json',
     })

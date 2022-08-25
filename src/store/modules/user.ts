@@ -66,7 +66,7 @@ export const useUserStore = defineStore({
     async getUserInfoAction() {
       if (!this.getToken) return null;
       const userInfo = await getLoginInfo();
-      console.log(typeof userInfo);
+
       this.setUserInfo(userInfo);
       return userInfo;
     },

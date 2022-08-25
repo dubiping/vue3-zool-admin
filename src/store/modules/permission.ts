@@ -132,7 +132,6 @@ export const usePermissionStore = defineStore({
         }
         return;
       };
-
       switch (permissionMode) {
         case PermissionModeEnum.ROUTE_MAPPING:
           routes = asyncRoutes;
@@ -160,20 +159,16 @@ export const usePermissionStore = defineStore({
           // !Simulate to obtain permission codes from the background,
           // this function may only need to be executed once, and the actual project can be put at the right time by itself
           let routeList: AppRouteRecordRaw[] = [];
-
           // Dynamically introduce components
           routeList = transformObjToRoute(dynamicRoutes);
-
           //  Background routing to menu structure
-          const backMenuList = transformRouteToMenu(routeList);
+          const backMenuList = transformRouteToMenu(routeList[0].children || []);
           this.setBackMenuList(backMenuList);
-          console.log(backMenuList, dynamicRoutes);
           // remove meta.ignoreRoute item
           routeList = filter(routeList, routeRemoveIgnoreFilter);
           routeList = routeList.filter(routeRemoveIgnoreFilter);
 
           routeList = flatMultiLevelRoutes(routeList);
-          console.log(routeList);
 
           routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
           break;
