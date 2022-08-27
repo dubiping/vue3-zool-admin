@@ -18,6 +18,15 @@
         "menuPath": "/a",
         "menuIcon": null,
         "children": []
+      },
+      {
+        "menuNameZh": "表单",
+        "menuNameEn": "formMgmt",
+        "pageRoute": "/page/formMgmt/index",
+        "menuModel": "/in",
+        "menuPath": "/a",
+        "menuIcon": null,
+        "children": []
       }
     ],
     "pageOpList": null,
