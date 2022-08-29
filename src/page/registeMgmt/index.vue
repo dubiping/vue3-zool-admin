@@ -2,12 +2,15 @@
   import { useBasic } from './hooks/basicHook';
   import { useTimeoutFn } from '@vueuse/core';
   import { formatDate } from '/@/utils/dateUtil';
-  // const $vm: any = {};
+  const $vm: any = {};
 
   // const count = ref<number>(0);
   // const { handleClick } = useBasic({ $vm });
+  // const { basicDialogState } = useDilog();
+
   // Object.assign($vm, {
   //   count,
+  //   basicDialogState,
   // });
 
   const dataSource = ref([]);

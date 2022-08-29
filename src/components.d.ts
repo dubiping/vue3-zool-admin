@@ -36,6 +36,7 @@ declare module '@vue/runtime-core' {
     APopover: typeof import('ant-design-vue/es')['Popover'];
     ARow: typeof import('ant-design-vue/es')['Row'];
     ASelect: typeof import('ant-design-vue/es')['Select'];
+    ASelectOption: typeof import('ant-design-vue/es')['SelectOption'];
     ASkeleton: typeof import('ant-design-vue/es')['Skeleton'];
     ASpin: typeof import('ant-design-vue/es')['Spin'];
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu'];

@@ -70,7 +70,9 @@
     };
   });
 
-  const getBindValue = computed(() => ({ ...attrs, ...props, ...unref(getProps) } as Recordable));
+  const getBindValue = computed(
+    () => ({ ...unref(attrs), ...props, ...unref(getProps) } as Recordable),
+  );
 
   const getSchema = computed((): FormSchema[] => {
     const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
@@ -185,7 +187,7 @@
   }
 
   function setFormModel(key: string, value: any) {
-    formModel[key] = value;
+    formModel.value[key] = value;
     const { validateTrigger } = unref(getBindValue);
     if (!validateTrigger || validateTrigger === 'change') {
       validateFields([key]).catch((_) => {});
@@ -247,6 +249,8 @@
           <template #[item]="data" v-for="item in Object.keys($slots)">
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
+          <slot name="label"></slot>
+          <slot name="suffix"></slot>
         </FormItem>
       </template>
 

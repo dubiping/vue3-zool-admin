@@ -284,6 +284,9 @@
 
       function renderLabelHelpMessage() {
         const { label, helpMessage, helpComponentProps, subLabel } = props.schema;
+        // 有自定义插槽先显示插槽
+        const labelSlot = getSlot(slots, 'label', { label, ...unref(getValues) });
+        if (labelSlot) return labelSlot;
         const renderLabel = subLabel ? (
           <span>
             {label} <span class="text-secondary">{subLabel}</span>
@@ -308,7 +311,7 @@
       function renderItem() {
         const { itemProps, slot, render, field, suffix, component } = props.schema;
         const { labelCol, wrapperCol } = unref(itemLabelWidthProp);
-        const { colon } = props.formProps;
+        const { colon, showFormItem } = props.formProps;
 
         if (component === 'Divider') {
           return (
@@ -325,10 +328,16 @@
               : renderComponent();
           };
 
-          const showSuffix = !!suffix;
-          const getSuffix = isFunction(suffix) ? suffix(unref(getValues)) : suffix;
+          // 处理后缀
+          const suffixSlot = getSlot(slots, 'suffix', unref(getValues));
+          const showSuffix = !!suffix || suffixSlot;
+          const getSuffix = suffixSlot
+            ? suffixSlot
+            : isFunction(suffix)
+            ? suffix(unref(getValues))
+            : suffix;
 
-          return (
+          return showFormItem ? (
             <Form.Item
               name={field}
               colon={colon}
@@ -339,11 +348,17 @@
               labelCol={labelCol}
               wrapperCol={wrapperCol}
             >
-              <div style="display:flex">
+              <div style="display:flex; align-items: center">
                 <div style="flex:1;">{getContent()}</div>
-                {showSuffix && <span class="suffix">{getSuffix}</span>}
+                {showSuffix && <span class="suffix ml-1">{getSuffix}</span>}
               </div>
             </Form.Item>
+          ) : (
+            <div class="flex items-center mb-2 zhqc-search-form-item relative">
+              {renderLabelHelpMessage()}
+              <div class="flex-1">{getContent()}</div>
+              {showSuffix && <span class="suffix ml-1">{getSuffix}</span>}
+            </div>
           );
         }
       }

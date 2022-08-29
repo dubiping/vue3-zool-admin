@@ -123,6 +123,8 @@ export interface FormProps {
   submitFunc?: () => Promise<void>;
   transformDateFunc?: (date: any) => string;
   colon?: boolean;
+
+  showFormItem?: boolean;
 }
 export interface FormSchema {
   // Field name
@@ -160,7 +162,7 @@ export interface FormSchema {
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
 
-  suffix?: string | number | ((values: RenderCallbackParams) => string | number);
+  suffix?: boolean | string | number | ((values: RenderCallbackParams) => string | number);
 
   // Validation rules
   rules?: Rule[];

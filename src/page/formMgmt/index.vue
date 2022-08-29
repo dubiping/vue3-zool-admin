@@ -1,5 +1,6 @@
 <script lang="ts" name="FormMgMt" setup>
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
+  import { ZhqcTopForm } from '/@/components/ZhqcTopForm/index';
   import { Input } from 'ant-design-vue';
   const schemas: FormSchema[] = [
     {
@@ -51,6 +52,7 @@
       colProps: {
         span: 8,
       },
+      suffix: true,
       rules: [{ required: true }],
     },
   ];
@@ -71,8 +73,55 @@
   };
 
   const handleClick = () => {
-    basicState.model.field4 = 'hhhhhhh';
+    basicState.model = {
+      field4: 'jjjj',
+    };
   };
+
+  const basicFormSchema = [
+    {
+      field: 'tenantId',
+      label: '租户',
+      component: 'Select',
+      componentProps: {
+        options: [
+          {
+            label: '租户1',
+            value: '122',
+          },
+          {
+            label: '租户2',
+            value: '133',
+          },
+        ],
+      },
+    },
+    {
+      field: 'macAddr',
+      label: 'mac地址',
+      component: 'Input',
+    },
+    {
+      field: 'addrDesc',
+      label: '描述',
+      component: 'Input',
+    },
+    {
+      field: 'addrDesc2',
+      label: '描述2',
+      component: 'Input',
+    },
+    {
+      field: 'addrDesc3',
+      label: '描述3',
+      component: 'Input',
+    },
+    {
+      field: 'addrDesc4',
+      label: '描述4',
+      component: 'Input',
+    },
+  ];
 </script>
 <template>
   <div>
@@ -80,7 +129,11 @@
       <template #f3="{ model, field }">
         <a-input v-model:value="model[field]" placeholder="自定义slot" />
       </template>
+      <template #label>哈哈哈</template>
+      <template #suffix>6</template>
     </BasicForm>
     <a-button @click="handleClick">点击</a-button>
+
+    <ZhqcTopForm :schemas="basicFormSchema" />
   </div>
 </template>

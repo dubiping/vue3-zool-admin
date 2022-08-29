@@ -100,4 +100,7 @@ export const basicProps = {
   labelAlign: propTypes.string,
 
   rowProps: Object as PropType<RowProps>,
+
+  // 是否需要显示form-item
+  showFormItem: propTypes.bool.def(true),
 };
