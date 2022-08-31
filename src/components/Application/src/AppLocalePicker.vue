@@ -21,6 +21,7 @@
   import { Icon } from '/@/components/Icon';
   import { useLocale } from '/@/locales/useLocale';
   import { localeList } from '/@/settings/localeSetting';
+  import { useUserStoreWithOut } from '/@/store/modules/user';
 
   const props = defineProps({
     /**
@@ -36,6 +37,7 @@
   const selectedKeys = ref<string[]>([]);
 
   const { changeLocale, getLocale } = useLocale();
+  const userStore = useUserStoreWithOut();
 
   const getLocaleText = computed(() => {
     const key = selectedKeys.value[0];
@@ -51,6 +53,7 @@
 
   async function toggleLocale(lang: LocaleType | string) {
     await changeLocale(lang as LocaleType);
+    await userStore.changeLanguage(lang);
     selectedKeys.value = [lang as string];
     props.reload && location.reload();
   }

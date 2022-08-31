@@ -7,6 +7,9 @@ import { Memory } from './memory';
 import {
   TOKEN_KEY,
   USER_INFO_KEY,
+  SSO_URL_KEY,
+  REFRESH_TOKEN_KEY,
+  CURRENT_CLIENT_KEY,
   ROLES_KEY,
   LOCK_INFO_KEY,
   PROJ_CFG_KEY,
@@ -20,6 +23,9 @@ import { pick, omit } from 'lodash-es';
 
 interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined;
+  [SSO_URL_KEY]: string | number | null | undefined;
+  [REFRESH_TOKEN_KEY]: string | number | null | undefined;
+  [CURRENT_CLIENT_KEY]: String;
   [USER_INFO_KEY]: UserInfo;
   [ROLES_KEY]: string[];
   [LOCK_INFO_KEY]: LockInfo;

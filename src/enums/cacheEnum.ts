@@ -25,6 +25,13 @@ export const APP_LOCAL_CACHE_KEY = 'COMMON__LOCAL__KEY__';
 // base global session key
 export const APP_SESSION_CACHE_KEY = 'COMMON__SESSION__KEY__';
 
+// sso登录地址
+export const SSO_URL_KEY = 'SSO_URL_KEY';
+// 刷新token
+export const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN_KEY';
+// 当前应用
+export const CURRENT_CLIENT_KEY = 'CURRENT_CLIENT_KEY';
+
 export enum CacheTypeEnum {
   SESSION,
   LOCAL,

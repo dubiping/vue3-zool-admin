@@ -15,6 +15,10 @@ input:-webkit-autofill {
 html {
   overflow: hidden;
   text-size-adjust: 100%;
+
+  textarea {
+    resize: none;
+  }
 }
 
 html,
@@ -31,10 +35,6 @@ body {
   &.gray-mode {
     filter: grayscale(100%);
     filter: progid:dximagetransform.microsoft.basicimage(grayscale=1);
-  }
-
-  textarea {
-    resize: none;
   }
 }
 

@@ -43,7 +43,6 @@
   </a-drawer>
 </template>
 <script lang="ts" setup>
-  import { computed, ref, unref, onMounted } from 'vue';
   import { useUserStoreWithOut } from '/@/store/modules/user';
   import { chunk } from 'lodash-es';
   import { setObjToUrlParams } from '/@/utils';
@@ -132,18 +131,6 @@
         dialogVisible.value = false;
         return;
       }
-
-      // await userStore.changeOrg({
-      //   orgId: item.id,
-      //   extendMap: {
-      //     ...unref(currentCom),
-      //     [item.field]: item.id,
-      //     client_version: item.version,
-      //   },
-      // });
-      // userStore.setCurrentClient(`${currentTenantId},${currentClientId},${item.id}`);
-      // window.location.reload();
-      // return;
     }
     const res = await userStore.changeClient(
       {

@@ -159,6 +159,5 @@ export interface GlobEnvConfig {
   // Upload url
   VITE_GLOB_UPLOAD_URL?: string;
   // glob mode
-  VITE_GLOB_MODE_LINEBASE?: string;
   VITE_GLOB_MODE_BASE?: string;
 }

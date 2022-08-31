@@ -19,6 +19,7 @@ export default {
 
     profileCenter: 'Profile Center',
     changeClient: 'Change Client',
+    updatePwd: 'Update Pwd',
 
     home: 'Home',
   },

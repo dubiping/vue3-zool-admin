@@ -21,7 +21,7 @@
       <ul :class="`${prefixCls}-module`">
         <li
           :class="[
-            `${prefixCls}-module__item `,
+            `${prefixCls}-module__item flex items-center justify-center !px-1`,
             {
               [`${prefixCls}-module__item--active`]: item.path === activePath,
             },
@@ -32,11 +32,12 @@
         >
           <SimpleMenuTag :item="item" collapseParent dot />
           <Icon
-            :class="`${prefixCls}-module__icon`"
-            :size="getCollapsed ? 16 : 20"
+            v-if="item.icon || (item.meta && item.meta.icon)"
+            :class="`${prefixCls}-module__icon !mb-0 mr-1`"
+            :size="getCollapsed ? 14 : 18"
             :icon="item.icon || (item.meta && item.meta.icon)"
           />
-          <p :class="`${prefixCls}-module__name`">
+          <p :class="`${prefixCls}-module__name overflow-ellipsis overflow-hidden`">
             {{ t(item.name) }}
           </p>
         </li>
@@ -167,6 +168,7 @@
 
       const getDomStyle = computed((): CSSProperties => {
         const fixedWidth = unref(getIsFixed) ? unref(getRealWidth) : 0;
+
         const width = `${unref(getMixSideWidth) + fixedWidth}px`;
         return getWrapCommonStyle(width);
       });
@@ -454,7 +456,7 @@
 
       &__item {
         position: relative;
-        padding: 12px 0;
+        padding: 10px 0;
         color: rgb(255 255 255 / 65%);
         text-align: center;
         cursor: pointer;

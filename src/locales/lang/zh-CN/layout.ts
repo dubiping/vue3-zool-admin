@@ -20,6 +20,7 @@ export default {
 
     profileCenter: '个人中心',
     changeClient: '切换应用',
+    updatePwd: '修改密码',
 
     home: '首页',
   },

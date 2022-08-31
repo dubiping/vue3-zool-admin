@@ -1,4 +1,3 @@
-import { ref, reactive } from 'vue';
 import { message, Modal } from 'ant-design-vue';
 import { BasicColumn } from '/@/components/Table';
 import componentSetting from '/@/settings/componentSetting';
@@ -18,10 +17,11 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { usePermission } from '/@/hooks/web/usePermission';
 import { useTableCols } from '/@/hooks/web/useTableCols';
 import { OpKeyEnum } from '../enum';
-const { t } = useI18n();
+// const { t } = useI18n();
 import { testApp } from '../api';
 
 export function useBasicTable({ $vm }) {
+  const t = inject('t') as Fn;
   const basicTableRef = ref<Nullable<any>>(null);
   const { hasPermission } = usePermission();
 
