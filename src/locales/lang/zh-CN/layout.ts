@@ -18,6 +18,9 @@ export default {
     lockScreen: '锁定屏幕',
     lockScreenBtn: '锁定',
 
+    profileCenter: '个人中心',
+    changeClient: '切换应用',
+
     home: '首页',
   },
   multipleTab: {

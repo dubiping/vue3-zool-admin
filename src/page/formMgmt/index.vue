@@ -1,6 +1,5 @@
 <script lang="ts" name="FormMgMt" setup>
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
-  import { ZhqcTopForm } from '/@/components/ZhqcTopForm/index';
+  import { FormSchema, useForm } from '/@/components/Form/index';
   import { Input } from 'ant-design-vue';
   const schemas: FormSchema[] = [
     {
@@ -125,15 +124,15 @@
 </script>
 <template>
   <div>
-    <BasicForm v-model:model="basicState.model" @register="register" @submit="handleSubmit">
+    <ZhqcForm v-model:model="basicState.model" @register="register" @submit="handleSubmit">
       <template #f3="{ model, field }">
         <a-input v-model:value="model[field]" placeholder="自定义slot" />
       </template>
       <template #label>哈哈哈</template>
       <template #suffix>6</template>
-    </BasicForm>
+    </ZhqcForm>
     <a-button @click="handleClick">点击</a-button>
 
-    <ZhqcTopForm :schemas="basicFormSchema" />
+    <ZhqcTopForm :schemas="basicFormSchema" @submit="handleSubmit" />
   </div>
 </template>

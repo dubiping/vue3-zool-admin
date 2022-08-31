@@ -17,7 +17,7 @@
     }
   }
 
-  &-primary:not(&-background-ghost):not([disabled]) {
+  &-primary:not(&-background-ghost, [disabled]) {
     color: @white;
   }
 
@@ -282,4 +282,16 @@
       border-color: transparent;
     }
   }
+
+  &.ant-btn-sm {
+    &:not(.ant-btn-link) {
+      padding: 0 15px;
+      min-height: 28px;
+      font-size: 12px;
+    }
+  }
+}
+
+.ant-btn-sm {
+  font-size: 12px !important;
 }

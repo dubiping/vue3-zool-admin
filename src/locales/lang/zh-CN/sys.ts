@@ -95,4 +95,14 @@ export default {
     smsCode: '短信验证码',
     mobile: '手机号码',
   },
+  topForm: {
+    planTit: '设置方案',
+    planName: '输入方案名称',
+    defaultPlan: '设为默认方案',
+    default: '默认',
+    savePlan: '保存新方案',
+    noPlan: '暂无方案',
+    planRepeat: '方案名称重复了，请重新输入',
+    planNameNull: '请输入方案名称',
+  },
 };

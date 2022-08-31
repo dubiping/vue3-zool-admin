@@ -37,29 +37,28 @@ export function useFormEvents({
     const formEl = unref(formElRef);
     if (!formEl) return;
 
-    const model = unref(formModel);
-    Object.keys(model).forEach((key) => {
+    Object.keys(unref(formModel)).forEach((key) => {
       const schema = unref(getSchema).find((item) => item.field === key);
       const isInput = schema?.component && defaultValueComponents.includes(schema.component);
-      model[key] = isInput ? defaultValueRef.value[key] || '' : defaultValueRef.value[key];
+      formModel.value[key] = isInput
+        ? defaultValueRef.value[key] || ''
+        : defaultValueRef.value[key];
     });
-    formModel.value = model;
     nextTick(() => clearValidate());
-
-    emit('reset', model);
+    emit('reset', unref(formModel));
     submitOnReset && handleSubmit();
   }
 
   /**
-   * @description: 设置表单字段值
+   * @description: 设置表单字段值, isReset为true, 以values的值作为新的对象， 否则是合并
    */
-  async function setFieldsValue(values: Recordable): Promise<void> {
+  async function setFieldsValue(values: Recordable, isReset?: boolean): Promise<void> {
     const fields = unref(getSchema)
       .map((item) => item.field)
       .filter(Boolean);
 
     const validKeys: string[] = [];
-    const model = unref(formModel);
+    const model = isReset ? {} : unref(formModel);
     Object.keys(values).forEach((key) => {
       const schema = unref(getSchema).find((item) => item.field === key);
       let value = values[key];
@@ -269,7 +268,7 @@ export function useFormEvents({
    */
   async function handleSubmit(e?: Event): Promise<void> {
     e && e.preventDefault();
-    const { submitFunc } = unref(getProps);
+    const { submitFunc, showFormItem } = unref(getProps);
     if (submitFunc && isFunction(submitFunc)) {
       await submitFunc();
       return;
@@ -277,8 +276,9 @@ export function useFormEvents({
     const formEl = unref(formElRef);
     if (!formEl) return;
     try {
+      // 显示formItem, 则使用验证之后的数据，否则直接formModel
       const values = await validate();
-      const res = handleFormValues(values);
+      const res = handleFormValues(showFormItem ? values : unref(formModel));
       emit('submit', res);
     } catch (error: any) {
       throw new Error(error);

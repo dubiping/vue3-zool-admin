@@ -101,4 +101,14 @@ export default {
     smsCode: 'SMS code',
     mobile: 'Mobile',
   },
+  topForm: {
+    planTit: 'Setting Scheme',
+    planName: 'Enter scheme name',
+    defaultPlan: 'Set as default',
+    default: 'default',
+    savePlan: 'Save Plan',
+    noPlan: 'No Plan',
+    planRepeat: 'Duplicate scheme name, please re-enter',
+    planNameNull: 'Please enter the scheme name',
+  },
 };

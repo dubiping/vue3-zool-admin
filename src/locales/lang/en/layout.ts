@@ -17,6 +17,9 @@ export default {
     lockScreen: 'Lock screen',
     lockScreenBtn: 'Locking',
 
+    profileCenter: 'Profile Center',
+    changeClient: 'Change Client',
+
     home: 'Home',
   },
   multipleTab: {

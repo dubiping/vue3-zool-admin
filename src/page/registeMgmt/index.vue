@@ -3,6 +3,7 @@
   import { useTimeoutFn } from '@vueuse/core';
   import { formatDate } from '/@/utils/dateUtil';
   const $vm: any = {};
+  const t = inject('t');
 
   // const count = ref<number>(0);
   // const { handleClick } = useBasic({ $vm });
@@ -58,6 +59,7 @@
 
 <template>
   <div>
+    {{ t('common.okText') }}
     <a-tabs>
       <a-tab-pane key="1" tab="Tab 1">
         <div v-for="(item, index) in dataSource" :key="index">

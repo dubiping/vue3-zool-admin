@@ -1,0 +1,126 @@
+@prefix-cls: ~'@{namespace}-basic-form';
+@prefix-cls2: ~'@{namespace}-form';
+@height-s: 28px;
+@font-s: 12px;
+
+.@{prefix-cls},
+.@{prefix-cls2} {
+  &.ant-form {
+    .ant-input-number {
+      width: 100%;
+    }
+
+    &-small {
+      .ant-form-item {
+        margin-bottom: 14px;
+
+        &-label > label {
+          height: @height-s;
+          font-size: @font-s;
+          color: #606266;
+        }
+
+        &-control {
+          position: relative;
+        }
+
+        &-explain {
+          position: absolute;
+          top: 100%;
+          min-height: unset;
+
+          &-error {
+            line-height: 14px;
+            font-size: @font-s;
+          }
+        }
+      }
+
+      .ant-input-affix-wrapper {
+        padding: 0 11px;
+
+        .ant-input[type='text'] {
+          height: 26px;
+        }
+      }
+
+      textarea {
+        padding-top: 2px;
+        padding-bottom: 2px;
+
+        input {
+          height: 26px;
+          min-height: 26px;
+        }
+      }
+
+      input {
+        font-size: @font-s;
+      }
+
+      .ant-select {
+        font-size: @font-s;
+
+        &-single:not(.ant-select-customize-input) .ant-select-selector {
+          height: @height-s;
+        }
+
+        &-single .ant-select-selector {
+          .ant-select-selection-item,
+          .ant-select-selection-placeholder {
+            line-height: 26px;
+
+            input {
+              height: 26px;
+            }
+          }
+        }
+
+        &.ant-select-multiple {
+          .ant-select-selector {
+            height: 28px;
+          }
+        }
+
+        .ant-select-single:not(.ant-select-customize-input)
+          .ant-select-selector
+          .ant-select-selection-search-input {
+          height: 26px;
+        }
+      }
+
+      .ant-input-number-sm {
+        input {
+          height: @height-s;
+        }
+      }
+
+      .ant-picker {
+        height: @height-s;
+      }
+
+      .ant-select-single.ant-select-sm:not(.ant-select-customize-input, .ant-select-customize-input)
+        .ant-select-selection-search-input {
+        height: 26px;
+      }
+
+      .ant-select-single:not(.ant-select-customize-input)
+        .ant-select-selector
+        .ant-select-selection-search-input {
+        height: 26px;
+      }
+    }
+  }
+}
+
+.error-no-wrap-form {
+  .ant-form-item-explain-error {
+    white-space: nowrap;
+  }
+}
+
+.error-show-wrap-form {
+  .ant-form-item-explain {
+    position: initial !important;
+  }
+}

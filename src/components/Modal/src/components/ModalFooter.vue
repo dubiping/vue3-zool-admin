@@ -2,7 +2,7 @@
   <div>
     <slot name="insertFooter"></slot>
     <a-button v-bind="cancelButtonProps" @click="handleCancel" v-if="showCancelBtn">
-      {{ cancelText }}
+      {{ getCancelText }}
     </a-button>
     <slot name="centerFooter"></slot>
     <a-button
@@ -12,7 +12,7 @@
       v-bind="okButtonProps"
       v-if="showOkBtn"
     >
-      {{ okText }}
+      {{ getOkText }}
     </a-button>
     <slot name="appendFooter"></slot>
   </div>
@@ -21,11 +21,21 @@
   import { defineComponent } from 'vue';
 
   import { basicProps } from '../props';
+  import { useI18n } from '/@/hooks/web/useI18n';
+
   export default defineComponent({
     name: 'BasicModalFooter',
     props: basicProps,
     emits: ['ok', 'cancel'],
-    setup(_, { emit }) {
+    setup(props, { emit }) {
+      const { t } = useI18n();
+      const getCancelText = computed(() => {
+        return props.cancelText || t('common.cancelText');
+      });
+      const getOkText = computed(() => {
+        return props.okText || t('common.okText');
+      });
+
       function handleOk(e: Event) {
         emit('ok', e);
       }
@@ -34,7 +44,7 @@
         emit('cancel', e);
       }
 
-      return { handleOk, handleCancel };
+      return { handleOk, handleCancel, getCancelText, getOkText };
     },
   });
 </script>

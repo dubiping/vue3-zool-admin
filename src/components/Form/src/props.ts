@@ -41,7 +41,7 @@ export const basicProps = {
   autoSubmitOnEnter: propTypes.bool.def(false),
   submitOnReset: propTypes.bool,
   submitOnChange: propTypes.bool,
-  size: propTypes.oneOf(['default', 'small', 'large']).def('default'),
+  size: propTypes.oneOf(['default', 'small', 'large']).def('small'),
   // 禁用表单
   disabled: propTypes.bool,
   emptySpan: {
@@ -64,7 +64,7 @@ export const basicProps = {
   alwaysShowLines: propTypes.number.def(1),
 
   // 是否显示操作按钮
-  showActionButtonGroup: propTypes.bool.def(true),
+  showActionButtonGroup: propTypes.bool.def(false),
   // 操作列Col配置
   actionColOptions: Object as PropType<Partial<ColEx>>,
   // 显示重置按钮

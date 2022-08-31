@@ -8,6 +8,7 @@
   import { dateItemType } from './helper';
   import { dateUtil } from '/@/utils/dateUtil';
   import { deepMerge } from '/@/utils';
+  import { isEmpty } from '/@/utils/is';
 
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -22,7 +23,14 @@
   import { useDebounceFn } from '@vueuse/core';
 
   const props = defineProps(basicProps);
-  const emit = defineEmits(['update:model', 'advanced-change', 'reset', 'submit', 'register']);
+  const emit = defineEmits([
+    'update:model',
+    'update:formRef',
+    'advanced-change',
+    'reset',
+    'submit',
+    'register',
+  ]);
   const attrs = useAttrs();
 
   const { prefixCls } = useDesign('basic-form');
@@ -32,6 +40,7 @@
   const propsRef = ref<Partial<FormProps>>({});
   const schemaRef = ref<Nullable<FormSchema[]>>(null);
   const formElRef = ref<Nullable<FormActionType>>(null);
+  const innerFormModel: any = ref({});
 
   const advanceState = reactive<AdvanceState>({
     isAdvanced: true,
@@ -44,12 +53,13 @@
   const getProps = computed((): FormProps => {
     return { ...props, ...unref(propsRef) } as FormProps;
   });
+  // 外部传入model，使用外部model， 否则内部处理，用于hook获取值
   const formModel: any = computed({
     get() {
-      return unref(getProps).model;
+      return !isEmpty(unref(getProps).model) ? unref(getProps).model : innerFormModel.value;
     },
     set(val) {
-      emit('update:model', val);
+      isEmpty(unref(getProps).model) ? (innerFormModel.value = val) : emit('update:model', val);
     },
   });
   const getFormClass = computed(() => {
@@ -224,6 +234,10 @@
   onMounted(() => {
     initDefault();
     emit('register', formActionType);
+
+    nextTick(() => {
+      emit('update:formRef', formElRef.value);
+    });
   });
 </script>
 <template>

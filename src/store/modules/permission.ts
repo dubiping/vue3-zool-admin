@@ -23,6 +23,7 @@ import { PageEnum } from '/@/enums/pageEnum';
 interface PermissionState {
   // Permission code list
   permCodeList: string[] | number[];
+  permFieldList: string[];
   // Whether the route has been dynamically added
   isDynamicAddedRoute: boolean;
   // To trigger a menu update
@@ -35,6 +36,7 @@ export const usePermissionStore = defineStore({
   id: 'app-permission',
   state: (): PermissionState => ({
     permCodeList: [],
+    permFieldList: [],
     // Whether the route has been dynamically added
     isDynamicAddedRoute: false,
     // To trigger a menu update
@@ -47,6 +49,9 @@ export const usePermissionStore = defineStore({
   getters: {
     getPermCodeList(): string[] | number[] {
       return this.permCodeList;
+    },
+    getPermFieldList(): string[] {
+      return this.permFieldList;
     },
     getBackMenuList(): Menu[] {
       return this.backMenuList;
@@ -64,6 +69,10 @@ export const usePermissionStore = defineStore({
   actions: {
     setPermCodeList(codeList: string[]) {
       this.permCodeList = codeList;
+    },
+
+    setPermFieldList(codeList: string[]) {
+      this.permFieldList = codeList;
     },
 
     setBackMenuList(list: Menu[]) {

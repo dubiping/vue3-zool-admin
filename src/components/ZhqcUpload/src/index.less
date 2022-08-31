@@ -1,0 +1,67 @@
+.zhqc_upload {
+  .upload-tips {
+    color: #606266;
+  }
+
+  .ant-upload {
+    border-radius: 6px;
+
+    &-drag {
+      height: unset !important;
+      background: transparent !important;
+
+      .ant-upload-btn {
+        padding: 16px;
+      }
+
+      .anticon {
+        color: #0394ff;
+
+        svg {
+          font-size: 32px;
+        }
+      }
+
+      .ant-upload-hint {
+        em {
+          color: #409eff;
+        }
+      }
+    }
+
+    &-list-picture-card {
+      &-container {
+        .ant-upload-list-item {
+          padding: 0;
+          border-radius: 6px;
+          // border: none;
+          overflow: hidden;
+        }
+      }
+    }
+
+    &-select-picture-card {
+      background-color: #fbfdff;
+
+      .anticon {
+        font-size: 28px !important;
+        color: #8c939d;
+      }
+    }
+
+    &-disabled {
+      background: #fafafa;
+
+      svg,
+      em {
+        color: #8c939d;
+      }
+    }
+
+    &-picture-card-wrapper.max_count {
+      .ant-upload-select {
+        display: none;
+      }
+    }
+  }
+}

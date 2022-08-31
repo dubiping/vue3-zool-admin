@@ -74,9 +74,9 @@ export function useFormValues({
       if (isArray(value) && value[0]?.format && value[1]?.format) {
         value = value.map((item) => transformDateFunc?.(item));
       }
-      // Remove spaces
+      // Remove spaces, 空字符串处理为null
       if (isString(value)) {
-        value = value.trim();
+        value = value.trim() || null;
       }
       if (!tryDeconstructArray(key, value, res) && !tryDeconstructObject(key, value, res)) {
         // 没有解构成功的，按原样赋值

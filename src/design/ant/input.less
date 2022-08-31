@@ -11,6 +11,19 @@
   right: 9px;
 }
 
+.ant-input,
+.ant-picker,
+.ant-input-affix-wrapper,
+.ant-input-number,
+.ant-select-selector {
+  border-radius: 4px !important;
+}
+
+.ant-input,
+.ant-input-number {
+  min-height: 26px;
+}
+
 .ant-input-clear-icon {
   margin-right: 5px;
 }
@@ -20,5 +33,25 @@
 
   textarea.ant-input {
     padding: 4px;
+  }
+}
+
+.ant-picker {
+  width: 100%;
+
+  &-input,
+  &-input > input {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.ant-input-group-wrapper {
+  &.rounded-r-none {
+    .ant-input,
+    .ant-input-affix-wrapper {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
   }
 }

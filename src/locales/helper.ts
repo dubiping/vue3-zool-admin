@@ -35,3 +35,17 @@ export function genMessage(langs: Record<string, Record<string, any>>, prefix = 
   });
   return obj;
 }
+
+export function genPageMessage(langs: Record<string, Record<string, any>>) {
+  const obj: Recordable = {};
+
+  Object.keys(langs).forEach((key) => {
+    const langFileModule = langs[key].default;
+    const keyList = key.split('/');
+    const size = keyList.length;
+    const moduleName = keyList[size - 1].split('.')[0];
+
+    set(obj, moduleName, langFileModule || {});
+  });
+  return obj;
+}

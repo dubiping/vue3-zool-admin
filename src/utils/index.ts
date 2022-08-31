@@ -89,3 +89,18 @@ export const withInstall = <T>(component: T, alias?: string) => {
   };
   return component as T & Plugin;
 };
+
+export const getUrlParams = () => {
+  const url = decodeURIComponent(window.location.href);
+  const params: any = {};
+  const urlSplits = url.split('?');
+  const paramStr = urlSplits[1];
+  if (paramStr) {
+    paramStr.split('&')?.forEach((item) => {
+      const key = item.split('=')[0];
+      const value = item.split('=')[1];
+      params[key] = value;
+    });
+  }
+  return params;
+};

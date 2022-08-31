@@ -15,7 +15,7 @@
       </template>
     </BasicForm>
 
-    <Table
+    <a-table
       ref="tableElRef"
       v-bind="getBindValues"
       :rowClassName="getRowClassName"
@@ -31,7 +31,7 @@
       <!--      <template #[`header-${column.dataIndex}`] v-for="(column, index) in columns" :key="index">-->
       <!--        <HeaderCell :column="column" />-->
       <!--      </template>-->
-    </Table>
+    </a-table>
   </div>
 </template>
 <script lang="ts">
@@ -42,10 +42,8 @@
     ColumnChangeParam,
   } from './types/table';
 
-  import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect } from 'vue';
-  import { Table } from 'ant-design-vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { PageWrapperFixedHeightKey } from '/@/components/Page';
+  // import { PageWrapperFixedHeightKey } from '/@/components/Page';
   import HeaderCell from './components/HeaderCell.vue';
   import { InnerHandlers } from './types/table';
 
@@ -72,7 +70,6 @@
 
   export default defineComponent({
     components: {
-      Table,
       BasicForm,
       HeaderCell,
     },
@@ -110,14 +107,14 @@
         return { ...props, ...unref(innerPropsRef) } as BasicTableProps;
       });
 
-      const isFixedHeightPage = inject(PageWrapperFixedHeightKey, false);
-      watchEffect(() => {
-        unref(isFixedHeightPage) &&
-          props.canResize &&
-          warn(
-            "'canResize' of BasicTable may not work in PageWrapper with 'fixedHeight' (especially in hot updates)",
-          );
-      });
+      // const isFixedHeightPage = inject(PageWrapperFixedHeightKey, false);
+      // watchEffect(() => {
+      //   unref(isFixedHeightPage) &&
+      //     props.canResize &&
+      //     warn(
+      //       "'canResize' of BasicTable may not work in PageWrapper with 'fixedHeight' (especially in hot updates)",
+      //     );
+      // });
 
       const { getLoading, setLoading } = useLoading(getProps);
       const {

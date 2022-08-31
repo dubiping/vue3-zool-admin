@@ -27,6 +27,15 @@
         "menuPath": "/a",
         "menuIcon": null,
         "children": []
+      },
+      {
+        "menuNameZh": "mac地址",
+        "menuNameEn": "MacAddressBinding",
+        "pageRoute": "/page/macAddressBinding/index",
+        "menuModel": "/in",
+        "menuPath": "/a",
+        "menuIcon": null,
+        "children": []
       }
     ],
     "pageOpList": null,

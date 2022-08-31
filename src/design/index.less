@@ -32,6 +32,10 @@ body {
     filter: grayscale(100%);
     filter: progid:dximagetransform.microsoft.basicimage(grayscale=1);
   }
+
+  textarea {
+    resize: none;
+  }
 }
 
 a:focus,
@@ -42,3 +46,14 @@ svg,
 span {
   outline: none !important;
 }
+
+each(range(4), {
+  .ellipse-@{value} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: @value;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+  }
+});
