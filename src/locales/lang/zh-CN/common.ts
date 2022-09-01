@@ -87,5 +87,7 @@ export default {
     startTime: '请选择开始时间',
     endTime: '请选择结束时间',
     confirmDel: '确定要删除吗?',
+    tryAgain: '请稍后重试',
+    exception: '下载异常，请稍后重试',
   },
 };

@@ -88,5 +88,7 @@ export default {
     startTime: 'Please select start date',
     endTime: 'Please select end date',
     confirmDel: 'Are you sure you want to delete?',
+    tryAgain: 'Try Again',
+    exception: 'Download exception, please try again later',
   },
 };

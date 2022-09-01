@@ -1,15 +1,10 @@
 import type { ErrorMessageMode } from '/#/axios';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { useI18n } from '/@/hooks/web/useI18n';
-// import router from '/@/router';
-// import { PageEnum } from '/@/enums/pageEnum';
 import { useUserStoreWithOut } from '/@/store/modules/user';
-import projectSetting from '/@/settings/projectSetting';
-import { SessionTimeoutProcessingEnum } from '/@/enums/appEnum';
 
 const { createMessage, createErrorModal } = useMessage();
 const error = createMessage.error!;
-const stp = projectSetting.sessionTimeoutProcessing;
 
 export function checkStatus(
   status: number,
@@ -30,11 +25,7 @@ export function checkStatus(
     case 401:
       userStore.setToken(undefined);
       errMessage = msg || t('sys.api.errMsg401');
-      if (stp === SessionTimeoutProcessingEnum.PAGE_COVERAGE) {
-        userStore.setSessionTimeout(true);
-      } else {
-        userStore.logout(true);
-      }
+      userStore.logout(true);
       break;
     case 403:
       errMessage = t('sys.api.errMsg403');

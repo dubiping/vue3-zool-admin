@@ -19,6 +19,9 @@ import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
 
+import { getUrlParams } from '/@/utils/index';
+import { useLocaleStoreWithOut } from '/@/store/modules/locale';
+
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal } = useMessage();
@@ -42,26 +45,48 @@ const transform: AxiosTransform = {
     if (!isTransformResponse) {
       return res.data;
     }
-    // 错误的时候返回
+    if (!res) {
+      throw new Error(t('sys.api.apiRequestFailed'));
+    }
 
+    // 错误的时候返回
     const { data } = res;
     if (!data) {
       // return '[HTTP] Request has no return value';
       throw new Error(t('sys.api.apiRequestFailed'));
     }
-    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
 
-    // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    // 处理图片验证码返回二进制流
+    if (data instanceof ArrayBuffer) {
+      const img = btoa(
+        new Uint8Array(data).reduce((data, byte) => data + String.fromCharCode(byte), ''),
+      );
+      return 'data:image/png;base64,' + img;
+    } else if (typeof data === 'string') {
+      return data;
+    }
+
+    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
+    // const { code, result, message } = data;
+    const { code, msg } = data;
+    // // 这里逻辑可以根据项目进行修改
+    // const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    // if (hasSuccess) {
+    //   return result;
+    // }
+    // TODO
+    const hasSuccess = data && Reflect.has(data, 'code') && (code as any) === ResultEnum.SUCCESS;
     if (hasSuccess) {
-      return result;
+      // @ts-ignore
+      return data.data;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
     let timeoutMsg = '';
-    switch (code) {
+    switch (code as string | number) {
+      case 'S0430':
+      case ResultEnum.TOKEN_INVALID:
       case ResultEnum.TIMEOUT:
         timeoutMsg = t('sys.api.timeoutMessage');
         const userStore = useUserStoreWithOut();
@@ -69,8 +94,8 @@ const transform: AxiosTransform = {
         userStore.logout(true);
         break;
       default:
-        if (message) {
-          timeoutMsg = message;
+        if (msg) {
+          timeoutMsg = msg;
         }
     }
 
@@ -138,13 +163,26 @@ const transform: AxiosTransform = {
    * @description: 请求拦截器处理
    */
   requestInterceptors: (config, options) => {
-    // 请求之前处理config
-    const token = getToken();
+    // 请求之前处理config TODO
+    const userStore = useUserStoreWithOut();
+    const token =
+      getUrlParams()?.token || userStore.getToken || getToken() || userStore.getLocalToken;
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
       (config as Recordable).headers.Authorization = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
-        : token;
+        : token; // ${'Bearer'}
+    }
+
+    const localeStore = useLocaleStoreWithOut();
+    if (localeStore.getLocale) {
+      let lang: string = localeStore.getLocale;
+      if (lang.includes('zh')) {
+        lang = 'zh-CN';
+      } else if (lang.includes('en')) {
+        lang = 'en-US';
+      }
+      (config as Recordable).headers.user_language = lang;
     }
     return config;
   },
@@ -153,6 +191,7 @@ const transform: AxiosTransform = {
    * @description: 响应拦截器处理
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
+    console.log('res:', res);
     return res;
   },
 
@@ -208,8 +247,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       {
         // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
         // authentication schemes，e.g: Bearer
-        // authenticationScheme: 'Bearer',
-        authenticationScheme: '',
+        authenticationScheme: 'Bearer',
         timeout: 10 * 1000,
         // 基础接口地址
         // baseURL: globSetting.apiUrl,
@@ -257,9 +295,9 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
 export const defHttp = createAxios();
 
 // other api url
-// export const otherHttp = createAxios({
-//   requestOptions: {
-//     apiUrl: 'xxx',
-//     urlPrefix: 'xxx',
-//   },
-// });
+export const otherHttp = createAxios({
+  requestOptions: {
+    apiUrl: '',
+    urlPrefix: '',
+  },
+});

@@ -11,6 +11,7 @@ import {
   enableRow,
   disableRow,
   deleteRow,
+  deleteBatch,
 } from '/@/api/common';
 import { formatDate } from '/@/utils/dateUtil';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -18,7 +19,6 @@ import { usePermission } from '/@/hooks/web/usePermission';
 import { useTableCols } from '/@/hooks/web/useTableCols';
 import { OpKeyEnum } from '../enum';
 // const { t } = useI18n();
-import { testApp } from '../api';
 
 export function useBasicTable({ $vm }) {
   const t = inject('t') as Fn;
@@ -104,6 +104,11 @@ export function useBasicTable({ $vm }) {
 
   const basicTableRawColumns: BasicColumn[] = filterPermFiledCols([
     {
+      type: 'selection',
+      fixed: 'left',
+      width: 60,
+    },
+    {
       title: t('common.index'),
       type: 'index',
       fixed: 'left',
@@ -165,7 +170,7 @@ export function useBasicTable({ $vm }) {
     {
       title: t('common.action'),
       type: 'slot',
-      width: 320,
+      width: 150,
       fixed: 'right',
       dataIndex: 'action',
     },
@@ -348,20 +353,33 @@ export function useBasicTable({ $vm }) {
 
   // 导出
   const handleExport = () => {
-    // console.log('handleExport');
-    testApp({
-      userNo: 'test_admin',
-      password: 'Aa123456',
-      platForm: 'App',
-      extendMap: {
-        pwdEncrypt: 'encryption',
-        change_client: 'jyh-ems-dispatcher',
-      },
-    });
+    console.log('handleExport');
   };
   // 设置
   const handleSetting = () => {
     basicCustomCols.visible = true;
+  };
+
+  // 批量删除
+  const handleBatchDelete = async () => {
+    const selectRows = basicTableRef.value?.getSelectRows();
+    if (!selectRows.length) {
+      return message.warning(t('common.msg.select'));
+    }
+
+    Modal.confirm({
+      title: t('common.delete'),
+      content: t('common.msg.delete'),
+      onOk: async () => {
+        await deleteBatch({
+          module: $vm.moduleName,
+          params: selectRows.map((item) => item.id),
+        });
+        basicTableRef.value.clearSelectedRows();
+        getPageInfo();
+        message.success(t('common.msg.success'));
+      },
+    });
   };
 
   return {
@@ -376,6 +394,7 @@ export function useBasicTable({ $vm }) {
     handleEnable,
     handleDisable,
     handleExport,
+    handleBatchDelete,
     basicCustomCols,
     handleSetting,
   };

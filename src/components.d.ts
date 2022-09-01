@@ -8,6 +8,7 @@ export {};
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAvatar: typeof import('ant-design-vue/es')['Avatar'];
+    ABackTop: typeof import('ant-design-vue/es')['BackTop'];
     ABadge: typeof import('ant-design-vue/es')['Badge'];
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb'];
     AButton: typeof import('ant-design-vue/es')['Button'];
@@ -31,6 +32,7 @@ declare module '@vue/runtime-core' {
     AMenu: typeof import('ant-design-vue/es')['Menu'];
     AMenuDivider: typeof import('ant-design-vue/es')['MenuDivider'];
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem'];
+    AMessage: typeof import('ant-design-vue/es')['Message'];
     AModal: typeof import('ant-design-vue/es')['Modal'];
     APagination: typeof import('ant-design-vue/es')['Pagination'];
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm'];

@@ -63,7 +63,9 @@ export function usePermission() {
 
     if (PermissionModeEnum.BACK === permMode) {
       const allCodeList = permissionStore.getPermCodeList as string[];
-      if (!isArray(value)) {
+      if (!allCodeList || !allCodeList.length) {
+        return true;
+      } else if (!isArray(value)) {
         return allCodeList.includes(value);
       }
       return (intersection(value, allCodeList) as string[]).length > 0;

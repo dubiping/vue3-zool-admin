@@ -94,3 +94,16 @@ export function downloadByUrl({
   openWindow(url, { target });
   return true;
 }
+
+export function readData(data: BlobPart) {
+  return new Promise((resolve) => {
+    const blob = new Blob([data]);
+    const reader = new FileReader();
+    reader.readAsText(blob, 'utf-8');
+
+    reader.onload = function () {
+      const resp = JSON.parse(reader.result as string);
+      resolve(resp);
+    };
+  });
+}

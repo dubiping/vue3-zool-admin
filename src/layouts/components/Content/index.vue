@@ -33,5 +33,9 @@
       top: 200px;
       z-index: @page-loading-z-index;
     }
+
+    & > div {
+      height: 100%;
+    }
   }
 </style>

@@ -4,12 +4,16 @@
   import LayoutMultipleHeader from './components/Header/MultipleHeader.vue';
   import LayoutSideBar from './components/Sider/index.vue';
   import LayoutFooter from './components/Footer/index.vue';
+  import LayoutFeatures from './components/Feature/index.vue';
 
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLockPage } from '/@/hooks/web/useLockPage';
   import { useAppInject } from '/@/hooks/web/useAppContext';
+  import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
+
+  // const LayoutFeatures = createAsyncComponent(() => import('./components/Feature/index.vue'));
 
   const { prefixCls } = useDesign('default-layout');
   const { getIsMobile } = useAppInject();
@@ -30,6 +34,7 @@
 
 <template>
   <a-layout :class="prefixCls" v-bind="lockEvents">
+    <LayoutFeatures />
     <LayoutHeader fixed v-if="getShowFullHeaderRef" />
     <a-layout :class="[layoutClass]">
       <LayoutSideBar v-if="getShowSidebar || getIsMobile" />

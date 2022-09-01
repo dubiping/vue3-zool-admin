@@ -12,12 +12,12 @@ import { useLocale } from '/@/locales/useLocale';
 const { getLocale } = useLocale();
 
 export type LayoutMapKey = 'LAYOUT';
-const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
+// const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
 
 const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 
 LayoutMap.set('LAYOUT', LAYOUT);
-LayoutMap.set('IFRAME', IFRAME);
+// LayoutMap.set('IFRAME', IFRAME);
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 

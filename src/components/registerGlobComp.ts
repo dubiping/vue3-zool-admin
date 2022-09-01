@@ -15,7 +15,8 @@ import { ZhqcCustomCols } from '/@/components/ZhqcCustomCols/index';
 import { BasicModal } from '/@/components/Modal';
 import { BasicForm } from '/@/components/Form/index';
 import { ZhqcVxeTable } from '/@/components/ZhqcVxeTable/index';
-import { Button } from './Button';
+import { Button } from '/@/components/Button';
+import { ImportExcel, ExportExcel, ExportTemplate } from '/@/components/ZhqcExcel';
 
 const Fonts = createFromIconfontCN({
   scriptUrl: '/@/assets/iconfont/iconfont.js',
@@ -39,5 +40,8 @@ export function registerGlobComp(app: App) {
     .component('BasicModal', BasicModal)
     .component('ZhqcForm', BasicForm)
     .component('ZhqcCustomCols', ZhqcCustomCols)
-    .component('ZhqcVxeTable', ZhqcVxeTable);
+    .component('ZhqcVxeTable', ZhqcVxeTable)
+    .component('ImportExcel', ImportExcel)
+    .component('ExportExcel', ExportExcel)
+    .component('ExportTemplate', ExportTemplate);
 }

@@ -54,6 +54,7 @@
     handleEnable,
     handleDisable,
     handleExport,
+    handleBatchDelete,
     handleSaveOrUpdate,
     basicCustomCols,
     handleSetting,
@@ -111,7 +112,7 @@
 </script>
 
 <template>
-  <div style="height: 100%">
+  <div>
     <ZhqcLayout v-loading="loading">
       <template #layout-header>
         <span>{{ $t('macAddressBinding.headerTitle') }}</span>
@@ -131,6 +132,25 @@
         </a-button>
       </template>
       <template #right-btn>
+        <a-button class="ml-2" @click="handleBatchDelete">
+          {{ $t('common.batchDelete') }}
+        </a-button>
+        <ExportExcel
+          :model="{
+            ...basicFormConfig.model,
+            page: pagination.current,
+            limit: pagination.pageSize,
+          }"
+          templateName="macAddress"
+          exportUrl="macAddress/export"
+          exportName="mac表格数据"
+        />
+        <ExportTemplate
+          templateName="macAddress"
+          exportUrl="macAddress/exportTemplate"
+          exportName="mac表格模板"
+        />
+        <ImportExcel templateName="macAddress" uploadUrl="macAddress/upload" />
         <a-button class="ml-2" @click="handleSetting"> {{ $t('common.setting') }}</a-button>
         <!-- <a-button
           class="ml-2"
