@@ -48,7 +48,7 @@
       <template #overlay>
         <a-menu>
           <template v-for="(item, index) in moreList" :key="index">
-            <a-menu-item :disabled="disabled(item)">
+            <a-menu-item :disabled="disabled(item)" @click="handleClick(item.event)">
               <div :style="getStyle(item.color)">
                 <IconFont :type="item.icon" />
                 <span class="ml-1">{{ item.label }}</span>
@@ -67,18 +67,18 @@
   import { isFunction } from '/@/utils/is';
 
   /**
-         *  按钮参数
-            label: t('common.enable'),
-            type: 'link',
-            show: true,
-            icon: 'icon-by-shutdown', 只能使用iconfont里图标
-            disabled: true,
-            fixed: 'right', // left固定左侧  right 固定右侧
-            color: 'red',   // 按钮文字和图标颜色
-            event: (record) => {
-              handleEnable(record);
-            },
-         */
+           *  按钮参数
+              label: t('common.enable'),
+              type: 'link',
+              show: true,
+              icon: 'icon-by-shutdown', 只能使用iconfont里图标
+              disabled: true,
+              fixed: 'right', // left固定左侧  right 固定右侧
+              color: 'red',   // 按钮文字和图标颜色
+              event: (record) => {
+                handleEnable(record);
+              },
+           */
 
   const props = defineProps({
     params: {

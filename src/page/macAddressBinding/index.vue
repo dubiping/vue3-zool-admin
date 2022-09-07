@@ -8,7 +8,7 @@
 
   const moduleName = 'macPool';
   const loading = ref(false);
-  const $vm: any = { moduleName, loading };
+  const $vm: Recordable = { moduleName, loading };
 
   // 下拉数据
   const selectOptions = reactive({
@@ -53,7 +53,6 @@
     handleCreate,
     handleEnable,
     handleDisable,
-    handleExport,
     handleBatchDelete,
     handleSaveOrUpdate,
     basicCustomCols,
@@ -61,19 +60,9 @@
   } = useBasicTable({ $vm });
 
   // 查询
-  const handleSubmit = (values, onlyUpdate): any => {
-    for (let key in values) {
-      basicFormConfig.model[key] = values[key] || null;
-    }
+  const handleSubmit = () => {
     pagination.current = 1;
-    !onlyUpdate && getPageInfo();
-  };
-
-  // 重置
-  const handleReset = (): any => {
-    for (let key in basicFormConfig.model) {
-      basicFormConfig.model[key] = undefined;
-    }
+    getPageInfo();
   };
 
   // 分页
@@ -123,7 +112,6 @@
           :schemas="basicFormSchema"
           :moduleName="moduleName"
           @submit="handleSubmit"
-          @reset="handleReset"
         />
       </template>
       <template #left-btn>

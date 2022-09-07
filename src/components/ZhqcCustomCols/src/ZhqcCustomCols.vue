@@ -8,7 +8,6 @@
     :showOkBtn="true"
     :isWrapperSlot="true"
     @ok="handleConfirm"
-    @visible-change="handleVisibleChange"
   >
     <Transfer
       v-loading="loading"
@@ -85,11 +84,25 @@
         tableCode: props.tableCode,
       });
 
-      basicState.sourceFields = res || [];
+      const list = res || [];
+      // 处理上线之后，再添加字段，首次不显示问题
+      if (res && list.length !== props.sourceFields.length) {
+        const newFieldList = props.sourceFields.filter((v, index) => {
+          if (!list.find((k) => k.prop === v.prop)) {
+            v.zorder = index;
+            return true;
+          }
+          return false;
+        });
+        list.unshift(...newFieldList);
+      }
+      basicState.sourceFields = list;
 
       emit(
         'update:fields',
-        (res || props.sourceFields).filter((v) => !v.hidden),
+        (res || props.sourceFields)
+          .filter((v) => !v.hidden)
+          .sort((a, b) => (a.zorder || 0) - (b.zorder || 0)),
       );
     } catch (error) {
       initFields();
@@ -104,14 +117,18 @@
     );
   };
 
-  onBeforeMount(() => {
+  onMounted(() => {
     getTableCols();
   });
 
   watch(
     () => props.visible,
     (val) => {
-      val && getTableCols();
+      if (val) {
+        nextTick(() => {
+          getTableCols();
+        });
+      }
     },
   );
 
@@ -159,8 +176,6 @@
         loading.value = false;
       });
   };
-
-  const handleVisibleChange = () => {};
 
   const handleReset = () => {
     if (!menuId) return;

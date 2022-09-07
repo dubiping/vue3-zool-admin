@@ -48,7 +48,7 @@ export function useTableCols() {
 
   function transformTableData(rawColums: any[], basicCustomCols) {
     return computed(() => {
-      const result = basicCustomCols.fieldList.reduce((list, item) => {
+      const result = toRaw(basicCustomCols.fieldList).reduce((list, item) => {
         const temp = rawColums.find((v) => item.prop === v.dataIndex);
         if (temp) {
           list.push({

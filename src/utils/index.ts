@@ -1,8 +1,11 @@
+import { FieldMapToTime } from './../components/Form/src/types/form';
 import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
 import type { App, Plugin } from 'vue';
 
 import { unref } from 'vue';
-import { isObject } from '/@/utils/is';
+import { isArray, isFunction, isObject, isString } from '/@/utils/is';
+import { dateUtil } from '/@/utils/dateUtil';
+import { type } from 'os';
 
 export const noop = () => {};
 
@@ -104,3 +107,45 @@ export const getUrlParams = () => {
   }
   return params;
 };
+
+type FieldMapToTime = [string, [string, string], string?][];
+export const formateFormValues = (values: Recordable, fieldMapToTime?: FieldMapToTime) => {
+  if (!isObject(values)) {
+    return {};
+  }
+
+  const res: Recordable = {};
+  for (const item of Object.entries(values)) {
+    let [, value] = item;
+    const [key] = item;
+    if (!key || (isArray(value) && value.length === 0) || isFunction(value)) {
+      continue;
+    }
+    // Remove spaces
+    if (isString(value)) {
+      value = value.trim() || null;
+    }
+    res[key] = value;
+  }
+  return handleRangeTimeValue(res, fieldMapToTime);
+};
+
+function handleRangeTimeValue(values: Recordable, fieldMapToTime?: FieldMapToTime) {
+  if (!fieldMapToTime || !Array.isArray(fieldMapToTime)) {
+    return values;
+  }
+
+  for (const [field, [startTimeKey, endTimeKey], format = 'YYYY-MM-DD'] of fieldMapToTime) {
+    if (!field || !startTimeKey || !endTimeKey || !values[field]) {
+      continue;
+    }
+
+    const [startTime, endTime]: string[] = values[field];
+
+    values[startTimeKey] = dateUtil(startTime).format(format);
+    values[endTimeKey] = dateUtil(endTime).format(format);
+    Reflect.deleteProperty(values, field);
+  }
+
+  return values;
+}

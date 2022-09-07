@@ -110,9 +110,7 @@
   });
 
   onMounted(() => {
-    getPlanList().finally(() => {
-      submit();
-    });
+    getPlanList();
   });
 </script>
 

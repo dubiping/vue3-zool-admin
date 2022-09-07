@@ -14,6 +14,7 @@ import {
   deleteBatch,
 } from '/@/api/common';
 import { formatDate } from '/@/utils/dateUtil';
+import { formateFormValues } from '/@/utils';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { usePermission } from '/@/hooks/web/usePermission';
 import { useTableCols } from '/@/hooks/web/useTableCols';
@@ -107,6 +108,7 @@ export function useBasicTable({ $vm }) {
       type: 'selection',
       fixed: 'left',
       width: 60,
+      dataIndex: 'selection',
     },
     {
       title: t('common.index'),
@@ -235,7 +237,7 @@ export function useBasicTable({ $vm }) {
     $vm.loading = true;
     try {
       const params = {
-        ...$vm.basicFormConfig?.model,
+        ...formateFormValues($vm.basicFormConfig?.model),
         page: pagination.current,
         limit: pagination.pageSize,
       };
@@ -351,10 +353,6 @@ export function useBasicTable({ $vm }) {
     });
   };
 
-  // 导出
-  const handleExport = () => {
-    console.log('handleExport');
-  };
   // 设置
   const handleSetting = () => {
     basicCustomCols.visible = true;
@@ -393,7 +391,6 @@ export function useBasicTable({ $vm }) {
     handleCreate,
     handleEnable,
     handleDisable,
-    handleExport,
     handleBatchDelete,
     basicCustomCols,
     handleSetting,
