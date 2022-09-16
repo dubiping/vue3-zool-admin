@@ -25,6 +25,22 @@
       type: Object as PropType<Recordable>,
       default: () => ({}),
     },
+    zipFlag: {
+      type: Boolean,
+      default: false,
+    },
+    syncFlag: {
+      type: Boolean,
+      default: true,
+    },
+    gridFlag: {
+      type: Boolean,
+      default: true,
+    },
+    columns: {
+      type: Array as PropType<Recordable[]>,
+      default: () => [],
+    },
   });
 
   const { t } = useI18n();
@@ -32,11 +48,25 @@
 
   const handleExport = async () => {
     try {
+      const list = props.columns.filter((v) => !v.type);
+      const extraParams = props.gridFlag
+        ? {
+            fieldList: list.map((v) => v.dataIndex),
+            titles: list.map((v) => v.title),
+          }
+        : {};
       const res = await exportData({
         url: props.exportUrl,
         params: {
           templateName: props.templateName,
-          paramMap: props.model,
+          paramMap: {
+            ...props.model,
+            zoneId: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          },
+          zipFlag: props.zipFlag,
+          syncFlag: props.syncFlag,
+          gridFlag: props.gridFlag,
+          ...extraParams,
         },
       });
 

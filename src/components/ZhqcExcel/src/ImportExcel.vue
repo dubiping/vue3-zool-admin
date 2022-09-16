@@ -27,16 +27,13 @@
   const loading = ref(false);
   const handleUpload = async (file) => {
     try {
+      const formData = new window.FormData();
+      formData.append('uploadFile', file.raw);
+      formData.append('uploadFileName', file.fileName);
+      formData.append('templateName', props.templateName);
       const res: any = await importData({
-        url: `${props.uploadUrl}/${props.templateName}`,
-        params: {
-          file: file.raw,
-          name: 'uploadFile',
-          data: {
-            uploadFileName: file.fileName,
-            templateName: props.templateName,
-          },
-        },
+        url: `${props.uploadUrl}`,
+        params: formData,
       });
 
       if (res.type === 'application/json') {

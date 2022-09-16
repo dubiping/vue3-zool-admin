@@ -52,7 +52,7 @@
   });
 
   async function toggleLocale(lang: LocaleType | string) {
-    await changeLocale(lang as LocaleType);
+    changeLocale(lang as LocaleType);
     await userStore.changeLanguage(lang);
     selectedKeys.value = [lang as string];
     props.reload && location.reload();

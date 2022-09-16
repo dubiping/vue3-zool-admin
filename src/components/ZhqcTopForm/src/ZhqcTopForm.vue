@@ -35,24 +35,32 @@
 
   // 条件下拉搜索框内容改变
   const handleUpdateValue = (event: any) => {
+    const list = unref(filterConditionList);
     const item = unref(attrs).schemas.find((v) => event === v.field);
-    const index = unref(filterConditionList.value).findIndex((v) => event === v.field);
-    filterConditionList.value[index] = { ...item };
+    const index = list.findIndex((v) => event === v.field);
+    list[index] = { ...item };
+    filterConditionList.value = [...list];
+    setFieldsValue({ [event]: null });
   };
 
   // 删除筛选条件
   const handleRemoveCondition = (field) => {
-    const index = unref(filterConditionList.value).findIndex((v) => field === v.field);
-    filterConditionList.value.splice(index, 1);
+    const list = unref(filterConditionList);
+    const index = list.findIndex((v) => field === v.field);
+    list.splice(index, 1);
+    filterConditionList.value = [...list];
   };
 
   // 新增筛选条件
   const handleAddCondition = () => {
-    filterConditionList.value.push({
-      label: '',
-      field: null,
-      component: 'Input',
-    });
+    filterConditionList.value = [
+      ...unref(filterConditionList),
+      {
+        label: '',
+        field: null,
+        component: 'Input',
+      },
+    ];
   };
   // 点击查询
   const handleSearch = () => {
@@ -160,7 +168,14 @@
         </template>
 
         <template #suffix="{ field }">
-          <CloseOutlined class="icon-close" @click="handleRemoveCondition(field)" />
+          <CloseOutlined
+            v-if="filterConditionList.length > 1"
+            class="icon-close"
+            @click="handleRemoveCondition(field)"
+          />
+        </template>
+        <template #[item]="data" v-for="item in Object.keys($slots)">
+          <slot :name="item" v-bind="data || {}"></slot>
         </template>
       </BasicForm>
 

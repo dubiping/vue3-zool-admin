@@ -184,13 +184,13 @@
     },
   );
 
-  watch(
-    () => unref(formModel),
-    useDebounceFn(() => {
-      unref(getProps).submitOnChange && handleSubmit();
-    }, 300),
-    { deep: true },
-  );
+  // watch(
+  //   () => unref(formModel),
+  //   useDebounceFn(() => {
+  //     unref(getProps).submitOnChange && handleSubmit();
+  //   }, 300),
+  //   { deep: true },
+  // );
 
   async function setProps(formProps: Partial<FormProps>): Promise<void> {
     propsRef.value = deepMerge(unref(propsRef) || {}, formProps);

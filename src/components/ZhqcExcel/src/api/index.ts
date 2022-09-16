@@ -4,13 +4,19 @@ import { getAppEnvConfig } from '/@/utils/env';
 const { VITE_GLOB_MODE_BASE } = getAppEnvConfig();
 
 export function importData({ url, params }) {
-  return defHttp.uploadFile<any>(
+  return defHttp.post<any>(
     {
-      url,
-      timeout: 500000,
+      url: `${VITE_GLOB_MODE_BASE}/${url}`,
+      params,
       responseType: 'blob',
+      timeout: 5000000, // 请求超时时间5分钟
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-    params,
+    {
+      isTransformResponse: false,
+    },
   );
 }
 

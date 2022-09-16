@@ -8,12 +8,13 @@
   import { Form, Col, Divider } from 'ant-design-vue';
   import { componentMap } from '../componentMap';
   import { BasicHelp } from '/@/components/Basic';
-  import { isBoolean, isFunction, isNull } from '/@/utils/is';
+  import { isBoolean, isFunction, isNull, isString } from '/@/utils/is';
   import { getSlot } from '/@/utils/helper/tsxHelper';
   import { createPlaceholderMessage, setComponentRuleType } from '../helper';
   import { upperFirst, cloneDeep } from 'lodash-es';
   import { useItemLabelWidth } from '../hooks/useLabelWidth';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDebounceFn } from '@vueuse/core';
 
   export default defineComponent({
     name: 'BasicFormItem',
@@ -217,6 +218,10 @@
         return rules;
       }
 
+      const debouncedFn = useDebounceFn(() => {
+        props.formActionType?.submit();
+      }, 300);
+
       function renderComponent() {
         const {
           renderComponentContent,
@@ -225,6 +230,8 @@
           changeEvent = 'change',
           valueField,
         } = props.schema;
+
+        const { submitOnChange } = props.formProps;
 
         const isCheck = component && ['Switch', 'Checkbox'].includes(component);
 
@@ -239,6 +246,8 @@
             const target = e ? e.target : null;
             const value = target ? (isCheck ? target.checked : target.value) : e;
             props.setFormModel(field, value);
+
+            submitOnChange && debouncedFn();
           },
         };
         const Comp = componentMap.get(component) as ReturnType<typeof defineComponent>;
@@ -329,7 +338,8 @@
           };
 
           // 处理后缀
-          const suffixSlot = getSlot(slots, 'suffix', unref(getValues));
+          const suffixName = isString(suffix) ? suffix : '';
+          const suffixSlot = getSlot(slots, suffixName || 'suffix', unref(getValues));
           const showSuffix = !!suffix || suffixSlot;
           const getSuffix = suffixSlot
             ? suffixSlot

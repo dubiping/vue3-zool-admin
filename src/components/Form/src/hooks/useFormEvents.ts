@@ -158,16 +158,16 @@ export function useFormEvents({
       updateData = [...data];
     }
 
-    const hasField = updateData.every(
-      (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
-    );
+    // const hasField = updateData.every(
+    //   (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+    // );
 
-    if (!hasField) {
-      error(
-        'All children of the form Schema array that need to be updated must contain the `field` field',
-      );
-      return;
-    }
+    // if (!hasField) {
+    //   error(
+    //     'All children of the form Schema array that need to be updated must contain the `field` field',
+    //   );
+    //   return;
+    // }
     schemaRef.value = updateData as FormSchema[];
   }
 
@@ -185,12 +185,12 @@ export function useFormEvents({
       (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
     );
 
-    if (!hasField) {
-      error(
-        'All children of the form Schema array that need to be updated must contain the `field` field',
-      );
-      return;
-    }
+    // if (!hasField) {
+    //   error(
+    //     'All children of the form Schema array that need to be updated must contain the `field` field',
+    //   );
+    //   return;
+    // }
     const schema: FormSchema[] = [];
     updateData.forEach((item) => {
       unref(getSchema).forEach((val) => {
