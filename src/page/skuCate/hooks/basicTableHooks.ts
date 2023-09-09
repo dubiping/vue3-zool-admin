@@ -24,6 +24,11 @@ import { OpKeyEnum } from '../enum';
 export function useBasicTable({ $vm }) {
   const t = inject('t') as Fn;
   const basicTableRef = ref<Nullable<any>>(null);
+  const basicTableState = reactive<any>({
+    basicTableColumns: [],
+    dataSource: [],
+    tableName: 'basicTable', // skuTable
+  });
   const { hasPermission } = usePermission();
 
   const pagination = reactive({
@@ -49,46 +54,6 @@ export function useBasicTable({ $vm }) {
       icon: 'icon-by-edit',
       event: (record) => {
         handleEdit(record);
-      },
-    },
-    {
-      label: t('common.delete'),
-      type: 'link',
-      show: true,
-      icon: 'icon-by-delete',
-      fixed: 'right',
-      color: 'red',
-      event: (record) => {
-        handleDelete(record);
-      },
-    },
-    {
-      label: t('common.enable'),
-      type: 'link',
-      show: true,
-      icon: 'icon-by-shutdown',
-      event: (record) => {
-        handleEnable(record);
-      },
-    },
-    {
-      label: t('common.disable'),
-      type: 'link',
-      show: true,
-      disabled: true,
-      icon: 'icon-by-lock',
-      event: (record) => {
-        handleDisable(record);
-      },
-    },
-    {
-      label: '绑定手机',
-      type: 'link',
-      show: true,
-      icon: 'icon-by-phone',
-      color: 'red',
-      event: (record) => {
-        handleDisable(record);
       },
     },
   ]);
@@ -172,18 +137,54 @@ export function useBasicTable({ $vm }) {
     {
       title: t('common.action'),
       type: 'slot',
-      width: 150,
+      width: 100,
       fixed: 'right',
       dataIndex: 'action',
     },
   ]);
 
-  basicCustomCols.sourceFields = transformSettingData(basicTableRawColumns);
+  // 商品表格
+  const basicSkuRawColumns: BasicColumn[] = filterPermFiledCols([
+    {
+      title: t('common.index'),
+      type: 'index',
+      fixed: 'left',
+      width: 60,
+      dataIndex: 'index',
+    },
+    {
+      title: t('macAddressBinding.macAddr'),
+      dataIndex: 'macAddr',
+      minWidth: 100,
+    },
+    {
+      title: t('macAddressBinding.addrDesc'),
+      dataIndex: 'addrDesc',
+      minWidth: 100,
+    },
+    {
+      title: t('macAddressBinding.isEnable'),
+      dataIndex: 'enableName',
+      minWidth: 100,
+    },
+    {
+      title: t('macAddressBinding.realAddr'),
+      dataIndex: 'realAddr',
+      minWidth: 100,
+    },
+    {
+      title: t('macAddressBinding.remark'),
+      dataIndex: 'remark',
+      minWidth: 100,
+    },
+  ]);
 
-  const basicTableColumns = transformTableData(basicTableRawColumns, basicCustomCols);
+  // basicCustomCols.sourceFields = transformSettingData(basicTableRawColumns);
+
+  // const basicTableColumns = transformTableData(basicTableRawColumns, basicCustomCols);
 
   // 表格数据
-  const dataSource = ref([
+  basicTableState.dataSource = [
     {
       id: '214389480130482176',
       tenantId: '200565753433427968',
@@ -232,13 +233,8 @@ export function useBasicTable({ $vm }) {
       detailList: null,
       detailName: null,
     },
-  ]);
+  ];
 
-  const pinnedBottomRowData = ref([
-    {
-      index: '合计',
-    },
-  ]);
   const getPageInfo = async () => {
     $vm.loading = true;
     try {
@@ -250,13 +246,48 @@ export function useBasicTable({ $vm }) {
       const res = await queryPage({ module: $vm.moduleName, params });
       $vm.loading = false;
       if (res) {
-        dataSource.value = res.list;
+        basicTableState.dataSource = res.list;
         pagination.current = +res.pageNum;
         pagination.pageSize = +res.pageSize;
         pagination.total = +res.total;
       }
     } catch {}
     $vm.loading = false;
+  };
+  // 获取商品数据
+  const getSkuInfo = async () => {
+    $vm.loading = true;
+    try {
+      const params = {
+        ...formateFormValues($vm.basicFormConfig?.model),
+        page: pagination.current,
+        limit: pagination.pageSize,
+      };
+      const res = await queryPage({ module: $vm.moduleName, params });
+      $vm.loading = false;
+      if (res) {
+        basicTableState.dataSource = res.list;
+        pagination.current = +res.pageNum;
+        pagination.pageSize = +res.pageSize;
+        pagination.total = +res.total;
+      }
+    } catch {}
+    $vm.loading = false;
+  };
+
+  const initBasicTable = (flag?: boolean) => {
+    const { isLeave } = $vm.basicFormConfig.model;
+    if (!isLeave || flag) {
+      basicCustomCols.sourceFields = transformSettingData(basicTableRawColumns);
+      basicTableState.basicTableColumns = transformTableData(basicTableRawColumns, basicCustomCols);
+      basicTableState.tableName = 'basicTable';
+      !flag && getPageInfo();
+    } else {
+      basicCustomCols.sourceFields = transformSettingData(basicSkuRawColumns);
+      basicTableState.basicTableColumns = transformTableData(basicSkuRawColumns, basicCustomCols);
+      basicTableState.tableName = 'skuTable';
+      getSkuInfo();
+    }
   };
 
   // 获取行数据
@@ -311,61 +342,8 @@ export function useBasicTable({ $vm }) {
     getRowData(record.id);
   };
 
-  // 删除
-  const handleDelete = (record) => {
-    Modal.confirm({
-      title: t('common.delete'),
-      content: t('common.msg.delete'),
-      onOk: async () => {
-        await deleteRow({
-          module: $vm.moduleName,
-          params: record.id,
-        });
-        message.success(t('common.msg.deleteSuccess'));
-        getPageInfo();
-      },
-    });
-  };
-
   // 启用
-  const handleEnable = (record) => {
-    Modal.confirm({
-      title: t('common.enable'),
-      content: t('common.msg.enable'),
-      onOk: async () => {
-        await enableRow({
-          module: $vm.moduleName,
-          params: record.id,
-        });
-        message.success(t('common.msg.success'));
-        getPageInfo();
-      },
-    });
-  };
-
-  // 停用
-  const handleDisable = (record) => {
-    Modal.confirm({
-      title: t('common.disable'),
-      content: t('common.msg.disable'),
-      onOk: async () => {
-        await disableRow({
-          module: $vm.moduleName,
-          params: record.id,
-        });
-        message.success(t('common.msg.success'));
-        getPageInfo();
-      },
-    });
-  };
-
-  // 设置
-  const handleSetting = () => {
-    basicCustomCols.visible = true;
-  };
-
-  // 批量删除
-  const handleBatchDelete = async () => {
+  const handleEnable = () => {
     const selectRows = basicTableRef.value?.getSelectRows();
     if (!selectRows.length) {
       return message.warning(t('common.msg.select'));
@@ -386,19 +364,45 @@ export function useBasicTable({ $vm }) {
     });
   };
 
+  // 停用
+  const handleDisable = () => {
+    const selectRows = basicTableRef.value?.getSelectRows();
+    if (!selectRows.length) {
+      return message.warning(t('common.msg.select'));
+    }
+
+    Modal.confirm({
+      title: t('common.delete'),
+      content: t('common.msg.delete'),
+      onOk: async () => {
+        await deleteBatch({
+          module: $vm.moduleName,
+          params: selectRows.map((item) => item.id),
+        });
+        basicTableRef.value.clearSelectedRows();
+        getPageInfo();
+        message.success(t('common.msg.success'));
+      },
+    });
+  };
+
+  // 设置
+  const handleSetting = () => {
+    basicCustomCols.visible = true;
+  };
+
   return {
     basicTableRef,
-    basicTableColumns,
-    dataSource,
-    pinnedBottomRowData,
+    basicTableState,
     actions,
     pagination,
     getPageInfo,
+    getSkuInfo,
+    initBasicTable,
     handleSaveOrUpdate,
     handleCreate,
     handleEnable,
     handleDisable,
-    handleBatchDelete,
     basicCustomCols,
     handleSetting,
   };

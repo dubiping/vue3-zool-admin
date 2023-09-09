@@ -8,8 +8,8 @@ import { propTypes } from '/@/utils/propTypes';
 
 export const basicProps = {
   model: {
-    type: Object as PropType<Recordable>,
-    default: {},
+    type: [Object, null] as PropType<Recordable | null>,
+    default: null,
   },
   // 标签宽度  固定宽度
   labelWidth: {

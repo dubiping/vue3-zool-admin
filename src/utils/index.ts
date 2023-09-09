@@ -1,11 +1,10 @@
-import { FieldMapToTime } from './../components/Form/src/types/form';
 import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
 import type { App, Plugin } from 'vue';
 
 import { unref } from 'vue';
 import { isArray, isFunction, isObject, isString } from '/@/utils/is';
 import { dateUtil } from '/@/utils/dateUtil';
-import { type } from 'os';
+import { cloneDeep } from 'lodash-es';
 
 export const noop = () => {};
 
@@ -148,4 +147,69 @@ function handleRangeTimeValue(values: Recordable, fieldMapToTime?: FieldMapToTim
   }
 
   return values;
+}
+
+/**
+ * tree translate Array
+ * @param {Object} node
+ * @returns
+ */
+export function translateTreeToArr(node, fn?: Function) {
+  const cloneNode = cloneDeep(node);
+  const queue = Array.isArray(cloneNode) ? [...cloneNode] : [cloneNode];
+  const data: any = [];
+  while (queue.length !== 0) {
+    const item = queue.shift();
+    const children = item.children;
+    const hasChildren = !!(children && children.length);
+    delete item.children;
+    data.push({ ...(isFunction(fn) ? fn({ ...item, hasChildren }) : { ...item, hasChildren }) });
+    if (children) {
+      for (let i = 0; i < children.length; i++) {
+        queue.push(children[i]);
+      }
+    }
+  }
+  return data;
+}
+
+export function translateTreeData(data: any[], fn?: Function) {
+  data.forEach((v) => {
+    isFunction(fn) && fn(v);
+    if (v.children && v.children.length) {
+      translateTreeData(v.children, fn);
+    }
+  });
+  return data;
+}
+
+export function translateTreeMap(node, id = 'id') {
+  const map: any = {};
+  const queue = Array.isArray(node) ? [...node] : [node];
+  while (queue.length !== 0) {
+    const item = queue.shift();
+    const children = item.children;
+    map[item[id]] = item;
+    if (children) {
+      for (let i = 0; i < children.length; i++) {
+        queue.push(children[i]);
+      }
+    }
+  }
+  return map;
+}
+
+export function getTreeSuperiorIds(dataMap, curId, containSelf = true) {
+  if (!dataMap || !curId) return [];
+
+  const ids: string[] = [];
+  let item = dataMap[curId];
+  if (!containSelf) {
+    item = item ? dataMap[item.parentId] : null;
+  }
+  while (item) {
+    ids.push(item.id);
+    item = dataMap[item.parentId];
+  }
+  return ids;
 }

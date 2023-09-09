@@ -17,6 +17,8 @@ import { BasicForm } from '/@/components/Form/index';
 import { ZhqcVxeTable } from '/@/components/ZhqcVxeTable/index';
 import { Button } from '/@/components/Button';
 import { ImportExcel, ExportExcel, ExportTemplate } from '/@/components/ZhqcExcel';
+import { ZhqcLayoutMul } from '/@/components/ZhqcLayoutMul';
+import { ZhqcLayoutSider } from '/@/components/ZhqcLayoutSider';
 
 const Fonts = createFromIconfontCN({
   scriptUrl: '/@/assets/iconfont/iconfont.js',
@@ -43,5 +45,7 @@ export function registerGlobComp(app: App) {
     .component('ZhqcVxeTable', ZhqcVxeTable)
     .component('ImportExcel', ImportExcel)
     .component('ExportExcel', ExportExcel)
-    .component('ExportTemplate', ExportTemplate);
+    .component('ExportTemplate', ExportTemplate)
+    .component('ZhqcLayoutMul', ZhqcLayoutMul)
+    .component('ZhqcLayoutSider', ZhqcLayoutSider);
 }

@@ -14,6 +14,8 @@ interface LangModule {
   dateLocaleName: string;
 }
 
+const modules = import.meta.glob(['./lang/zh_CN.ts', './lang/en.ts'], { eager: true });
+
 function setI18nLanguage(locale: LocaleType) {
   const localeStore = useLocaleStoreWithOut();
 
@@ -37,7 +39,7 @@ export function useLocale() {
 
   // Switching the language will change the locale of useI18n
   // And submit to configuration modification
-  async function changeLocale(locale: LocaleType) {
+  function changeLocale(locale: LocaleType) {
     const globalI18n = i18n.global;
     const currentLocale = unref(globalI18n.locale);
     if (currentLocale === locale) {
@@ -48,7 +50,7 @@ export function useLocale() {
       setI18nLanguage(locale);
       return locale;
     }
-    const langModule = ((await import(`./lang/${locale}.ts`)) as any).default as LangModule;
+    const langModule = (modules[`./lang/${locale}.ts`] as any).default as LangModule;
     if (!langModule) return;
 
     const { message } = langModule;

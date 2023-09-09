@@ -31,7 +31,6 @@
     :header-height="32"
     :row-data="dataSource"
     :enable-filter="true"
-    :enable-range-selection="true"
     :pinned-bottom-row-data="pinnedBottomRowData"
     :suppressRowClickSelection="true"
     :loadingOverlayComponent="overlayLoading"

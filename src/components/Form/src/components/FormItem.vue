@@ -394,7 +394,7 @@
 
         return (
           isIfShow && (
-            <Col {...realColProps} v-show={isShow}>
+            <Col {...realColProps} v-show={isShow} class="zhqc-form-col">
               {getContent()}
             </Col>
           )

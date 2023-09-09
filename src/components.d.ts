@@ -20,7 +20,6 @@ declare module '@vue/runtime-core' {
     ADropdown: typeof import('ant-design-vue/es')['Dropdown'];
     AForm: typeof import('ant-design-vue/es')['Form'];
     AInput: typeof import('ant-design-vue/es')['Input'];
-    AInputNumber: typeof import('ant-design-vue/es')['InputNumber'];
     AInputPassword: typeof import('ant-design-vue/es')['InputPassword'];
     ALayout: typeof import('ant-design-vue/es')['Layout'];
     ALayoutFooter: typeof import('ant-design-vue/es')['LayoutFooter'];
@@ -32,11 +31,11 @@ declare module '@vue/runtime-core' {
     AMenu: typeof import('ant-design-vue/es')['Menu'];
     AMenuDivider: typeof import('ant-design-vue/es')['MenuDivider'];
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem'];
-    AMessage: typeof import('ant-design-vue/es')['Message'];
     AModal: typeof import('ant-design-vue/es')['Modal'];
     APagination: typeof import('ant-design-vue/es')['Pagination'];
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm'];
     APopover: typeof import('ant-design-vue/es')['Popover'];
+    AResult: typeof import('ant-design-vue/es')['Result'];
     ARow: typeof import('ant-design-vue/es')['Row'];
     ASelect: typeof import('ant-design-vue/es')['Select'];
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption'];
@@ -44,8 +43,6 @@ declare module '@vue/runtime-core' {
     ASpace: typeof import('ant-design-vue/es')['Space'];
     ASpin: typeof import('ant-design-vue/es')['Spin'];
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu'];
-    ASwitch: typeof import('ant-design-vue/es')['Switch'];
-    ATable: typeof import('ant-design-vue/es')['Table'];
     ATabPane: typeof import('ant-design-vue/es')['TabPane'];
     ATabs: typeof import('ant-design-vue/es')['Tabs'];
     ATag: typeof import('ant-design-vue/es')['Tag'];

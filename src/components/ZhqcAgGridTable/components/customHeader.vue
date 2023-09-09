@@ -3,11 +3,11 @@
     <a-input
       v-if="showFilter"
       ref="inputRef"
-      v-model="filterName"
+      v-model:value="filterName"
       size="small"
       type="text"
       placeholder="请输入"
-      clearable
+      allowClear
       @blur="showFilter = !showFilter"
       @clear="filterHandleEvent"
       @keyup.enter="filterHandleEvent($event)"

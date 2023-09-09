@@ -1,8 +1,8 @@
 import { genMessage, genPageMessage } from '../helper';
 import antdLocale from 'ant-design-vue/es/locale/zh_CN';
 
-const modules: any = import.meta.globEager('./zh-CN/**/*.ts');
-const context: any = import.meta.globEager('/src/page/**/*.zh.ts');
+const modules: any = import.meta.glob('./zh-CN/**/*.ts', { eager: true });
+const context: any = import.meta.glob('/src/page/**/*.zh.ts', { eager: true });
 
 export default {
   message: {

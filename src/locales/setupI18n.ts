@@ -10,11 +10,13 @@ const { fallback, availableLocales } = localeSetting;
 
 export let i18n: ReturnType<typeof createI18n>;
 
-async function createI18nOptions(): Promise<I18nOptions> {
+const modules = import.meta.glob(['./lang/zh_CN.ts', './lang/en.ts'], { eager: true });
+
+function createI18nOptions(): I18nOptions {
   const localeStore = useLocaleStoreWithOut();
   const locale = localeStore.getLocale;
-  const defaultLocal = await import(`./lang/${locale}.ts`);
-  const message = defaultLocal.default?.message ?? {};
+  // const defaultLocal = await import(`./lang/${locale}.ts`);
+  const message = (modules[`./lang/${locale}.ts`] as any).default?.message ?? {};
 
   setHtmlPageLang(locale);
   setLoadLocalePool((loadLocalePool) => {
@@ -37,8 +39,8 @@ async function createI18nOptions(): Promise<I18nOptions> {
 }
 
 // setup i18n instance with glob
-export async function setupI18n(app: App) {
-  const options = await createI18nOptions();
+export function setupI18n(app: App) {
+  const options = createI18nOptions();
   i18n = createI18n(options) as I18n;
   app.use(i18n);
 }

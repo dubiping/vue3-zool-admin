@@ -8,7 +8,7 @@
   import { dateItemType } from './helper';
   import { dateUtil } from '/@/utils/dateUtil';
   import { deepMerge } from '/@/utils';
-  import { isEmpty } from '/@/utils/is';
+  // import { isEmpty } from '/@/utils/is';
 
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -20,7 +20,7 @@
   import { createFormContext } from './hooks/useFormContext';
   import { useAutoFocus } from './hooks/useAutoFocus';
   import { useModalContext } from '/@/components/Modal';
-  import { useDebounceFn } from '@vueuse/core';
+  // import { useDebounceFn } from '@vueuse/core';
 
   const props = defineProps(basicProps);
   const emit = defineEmits([
@@ -56,10 +56,10 @@
   // 外部传入model，使用外部model， 否则内部处理，用于hook获取值
   const formModel: any = computed({
     get() {
-      return !isEmpty(unref(getProps).model) ? unref(getProps).model : innerFormModel.value;
+      return unref(getProps).model ? unref(getProps).model : innerFormModel.value;
     },
     set(val) {
-      isEmpty(unref(getProps).model) ? (innerFormModel.value = val) : emit('update:model', val);
+      !unref(getProps).model ? (innerFormModel.value = val) : emit('update:model', val);
     },
   });
   const getFormClass = computed(() => {
@@ -197,7 +197,9 @@
   }
 
   function setFormModel(key: string, value: any) {
-    formModel.value[key] = value;
+    const model = unref(formModel);
+    model[key] = value;
+    formModel.value = { ...model };
     const { validateTrigger } = unref(getBindValue);
     if (!validateTrigger || validateTrigger === 'change') {
       validateFields([key]).catch((_) => {});

@@ -36,6 +36,32 @@
         "menuPath": "/a",
         "menuIcon": null,
         "children": []
+      },
+      {
+        "menuNameZh": "仓库信息",
+        "menuNameEn": "Warehouse",
+        "pageRoute": "/page/warehouse",
+        "menuModel": "/in",
+        "menuPath": "/a",
+        "menuIcon": null,
+        "children": [
+          {
+            "menuNameZh": "仓库",
+            "menuNameEn": "Store",
+            "pageRoute": "/page/warehouse/store/index",
+            "menuModel": "/in",
+            "menuPath": "/a",
+            "menuIcon": null
+          },
+          {
+            "menuNameZh": "库区",
+            "menuNameEn": "Lot",
+            "pageRoute": "/page/warehouse/lot/index",
+            "menuModel": "/in",
+            "menuPath": "/a",
+            "menuIcon": null
+          }
+        ]
       }
     ],
     "pageOpList": null,

@@ -44,21 +44,21 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   });
 }
 
-function asyncImportRouteSingle(item: AppRouteRecordRaw | undefined) {
+function asyncImportRouteSingle(item: AppRouteRecordRaw | undefined, isParent?: boolean) {
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../page/**/index.{vue,tsx}');
   if (!item) return;
   if (!item.component && item.meta?.frameSrc) {
     item.component = 'IFRAME';
   }
   const { component, name } = item;
-  if (component) {
+  if (component && !isParent) {
     const layoutFound = LayoutMap.get(component.toUpperCase());
     if (layoutFound) {
       item.component = layoutFound;
     } else {
       item.component = dynamicImport(dynamicViewsModules, component as string);
     }
-  } else if (name) {
+  } else if (name || isParent) {
     item.component = getParentLayout();
   }
 }
@@ -104,7 +104,7 @@ export function transformObjToRoute<T = MenuRecordRaw>(routeList: MenuRecordRaw[
         },
         ...(item.pageRoute ? { component: item.pageRoute } : {}),
       };
-      asyncImportRouteSingle(temp);
+      asyncImportRouteSingle(temp, !!item.children?.length);
       return temp;
     },
   });

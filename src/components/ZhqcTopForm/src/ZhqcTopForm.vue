@@ -142,6 +142,7 @@
         :rowProps="{
           gutter: 16,
         }"
+        :showAdvancedButton="true"
         :showActionButtonGroup="false"
         :showFormItem="false"
         @register="register"
@@ -285,7 +286,7 @@
       font-size: 12px;
     }
 
-    :deep(.zhqc-search-form-item) {
+    :deep(.zhqc-form-col) {
       &:hover .icon-close {
         display: block;
       }
